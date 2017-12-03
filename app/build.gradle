@@ -21,10 +21,42 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-    testCompile 'junit:junit:4.12'
+    testCompile "junit:junit:$junitVersion"
+    androidTestCompile("com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion") {
+        exclude module: 'support-annotations'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-v4'
+        exclude module: 'appcompat-v7'
+        exclude module: 'design'
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:$espressoVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile("com.android.support.test:runner:$rootProject.testSupportVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestCompile("com.android.support.test:rules:$rootProject.testSupportVersion") {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    compile "com.android.support:appcompat-v7:$rootProject.androidSupportVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.androidSupportVersion"
+    compile "com.android.support:design:$rootProject.androidSupportVersion"
+    compile "com.android.support:support-v4:$rootProject.androidSupportVersion"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLOVersion"
+
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+
+    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    androidTestCompile "org.mockito:mockito-android:$rootProject.mockitoVersion"
 }

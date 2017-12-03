@@ -15,7 +15,22 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
     }
+}
+
+ext {
+    androidSupportVersion = '25.3.1'
+    constraintLOVersion = '1.0.2'
+    picassoVersion = '2.5.2'
+    retrofitVersion = '2.1.0'
+    daggerVersion = '2.11'
+    junitVersion = '4.12'
+    mockitoVersion = '2.8.47'
+    espressoVersion = '3.0.1'
+    testSupportVersion = '1.0.1'
 }
 
 task clean(type: Delete) {
