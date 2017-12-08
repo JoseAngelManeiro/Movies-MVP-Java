@@ -14,8 +14,8 @@ public class Page {
     private int totalResults;
     @SerializedName("total_pages")
     private int totalPages;
-    @SerializedName("movies")
-    private List<Movie> movies = null;
+    @SerializedName("results")
+    private List<Movie> movies;
 
     /**
      * No args constructor for use in serialization

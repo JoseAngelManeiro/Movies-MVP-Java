@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 
-public interface ApiEndpointInterface {
+public interface MovieService {
 
     @GET("movie/popular")
     Call<Page> getMovies(@Query("api_key") String apiKey);
