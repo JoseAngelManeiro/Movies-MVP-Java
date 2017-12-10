@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.data.source.local;
+package com.joseangelmaneiro.movies.data.source.local.db;
 
 
 import android.text.TextUtils;
