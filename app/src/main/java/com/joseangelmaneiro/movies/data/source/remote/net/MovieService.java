@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.data.source.remote;
+package com.joseangelmaneiro.movies.data.source.remote.net;
 
 import com.joseangelmaneiro.movies.data.Page;
 import retrofit2.Call;
