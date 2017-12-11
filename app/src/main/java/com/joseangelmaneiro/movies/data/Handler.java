@@ -1,8 +1,10 @@
 package com.joseangelmaneiro.movies.data;
 
-/**
- * Created by joseangelmaneiro on 11/12/17.
- */
+//Callback to comunicate presenter with repository
+public interface Handler<T> {
 
-public class Handler {
+    void handle(T result);
+
+    void error();
+
 }

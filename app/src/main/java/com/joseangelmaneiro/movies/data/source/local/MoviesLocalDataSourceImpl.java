@@ -1,25 +1,25 @@
 package com.joseangelmaneiro.movies.data.source.local;
 
+import com.joseangelmaneiro.movies.data.Handler;
 import com.joseangelmaneiro.movies.data.Movie;
-import com.joseangelmaneiro.movies.data.source.MoviesDataSource;
 import com.joseangelmaneiro.movies.data.source.local.db.MoviesDatabaseHelper;
 import java.util.List;
 
 
-public class MoviesLocalDataSource implements MoviesDataSource {
+public class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
 
-    private static MoviesLocalDataSource INSTANCE;
+    private static MoviesLocalDataSourceImpl INSTANCE;
 
     private MoviesDatabaseHelper moviesDatabaseHelper;
 
     // Prevent direct instantiation.
-    private MoviesLocalDataSource(MoviesDatabaseHelper moviesDatabaseHelper) {
+    private MoviesLocalDataSourceImpl(MoviesDatabaseHelper moviesDatabaseHelper) {
         this.moviesDatabaseHelper = moviesDatabaseHelper;
     }
 
-    public static MoviesLocalDataSource getInstance(MoviesDatabaseHelper moviesDatabaseHelper) {
+    public static MoviesLocalDataSourceImpl getInstance(MoviesDatabaseHelper moviesDatabaseHelper) {
         if (INSTANCE == null) {
-            INSTANCE = new MoviesLocalDataSource(moviesDatabaseHelper);
+            INSTANCE = new MoviesLocalDataSourceImpl(moviesDatabaseHelper);
         }
         return INSTANCE;
     }
