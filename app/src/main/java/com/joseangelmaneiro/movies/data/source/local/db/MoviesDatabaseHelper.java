@@ -168,14 +168,10 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteAllMovies() {
         SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
         try {
             db.delete(TABLE_MOVIE, null, null);
-            db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d("MoviesDB", "Error while trying to delete all movies");
-        } finally {
-            db.endTransaction();
         }
     }
 
