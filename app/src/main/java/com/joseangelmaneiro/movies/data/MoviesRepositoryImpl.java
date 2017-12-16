@@ -29,6 +29,10 @@ public class MoviesRepositoryImpl implements MoviesRepository {
         return INSTANCE;
     }
 
+    public static void destroyInstance() {
+        INSTANCE = null;
+    }
+
     @Override
     public void getMovies(final Handler<List<Movie>> handler) {
         remoteDataSource.getMovies(new Handler<List<Movie>>() {
