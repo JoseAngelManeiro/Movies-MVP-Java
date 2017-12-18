@@ -54,9 +54,6 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
 
-    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-
     testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
     androidTestCompile "org.mockito:mockito-android:$rootProject.mockitoVersion"
 }
