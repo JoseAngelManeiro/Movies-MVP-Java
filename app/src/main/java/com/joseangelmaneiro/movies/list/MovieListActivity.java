@@ -1,8 +1,10 @@
-package com.joseangelmaneiro.movies;
+package com.joseangelmaneiro.movies.list;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+
+import com.joseangelmaneiro.movies.R;
 
 
 public class MovieListActivity extends AppCompatActivity {
