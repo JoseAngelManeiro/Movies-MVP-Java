@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.list;
+package com.joseangelmaneiro.movies.ui.list;
 
 
 public interface MovieListView {

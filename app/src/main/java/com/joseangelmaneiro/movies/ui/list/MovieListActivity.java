@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.list;
+package com.joseangelmaneiro.movies.ui.list;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
