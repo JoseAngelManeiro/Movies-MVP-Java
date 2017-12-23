@@ -52,4 +52,8 @@ public class TestUtils implements TestData{
         return movies;
     }
 
+    public static List<Movie> createMainMovieList(){
+        return createMovieList(10);
+    }
+
 }

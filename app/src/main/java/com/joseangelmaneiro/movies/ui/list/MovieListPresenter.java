@@ -12,6 +12,8 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     private MoviesRepository repository;
 
+    private Formatter formatter;
+
     private WeakReference<MovieListView> view;
 
     private List<Movie> movieList;
@@ -19,8 +21,9 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     private int selectedMovieId;
 
 
-    public MovieListPresenter(MoviesRepository repository){
+    public MovieListPresenter(MoviesRepository repository, Formatter formatter){
         this.repository = repository;
+        this.formatter = formatter;
     }
 
     public void setView(MovieListView movieListView){
@@ -64,7 +67,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     public void configureCell(MovieCellView movieCellView, int position){
         Movie movie = getMovie(position);
-        movieCellView.displayImage(Formatter.getCompleteUrlImage(movie.getPosterPath()));
+        movieCellView.displayImage(formatter.getCompleteUrlImage(movie.getPosterPath()));
     }
 
     public void onItemClick(int position){
@@ -85,7 +88,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     public boolean moviesListIsEmpty(){
-        return movieList!=null && !movieList.isEmpty();
+        return movieList==null || movieList.isEmpty();
     }
 
     public int getSelectedMovieId(){
