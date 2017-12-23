@@ -38,6 +38,10 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         invokeGetMovies();
     }
 
+    public void invokeGetMovies(){
+        repository.getMovies(this);
+    }
+
     @Override
     public void handle(List<Movie> movieList) {
         saveMovies(movieList);
@@ -93,10 +97,6 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     public int getSelectedMovieId(){
         return selectedMovieId;
-    }
-
-    private void invokeGetMovies(){
-        repository.getMovies(this);
     }
 
 }

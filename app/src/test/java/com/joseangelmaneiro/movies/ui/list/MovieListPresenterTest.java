@@ -74,7 +74,7 @@ public class MovieListPresenterTest {
         // The list is empty when starting
         assertTrue(sut.moviesListIsEmpty());
 
-        sut.viewReady();
+        sut.invokeGetMovies();
 
         setMoviesAvailable(TestUtils.createMainMovieList());
 
@@ -84,7 +84,7 @@ public class MovieListPresenterTest {
 
     @Test
     public void invokeGetMovies_RefreshesView(){
-        sut.viewReady();
+        sut.invokeGetMovies();
 
         setMoviesAvailable(TestUtils.createMainMovieList());
 
@@ -94,7 +94,7 @@ public class MovieListPresenterTest {
 
     @Test
     public void invokeGetMovies_ShowsError(){
-        sut.viewReady();
+        sut.invokeGetMovies();
 
         setMoviesError();
 
