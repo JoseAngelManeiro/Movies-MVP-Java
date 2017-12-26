@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     android:background="@drawable/item_background"
     android:padding="2dp"
-    android:contentDescription="@string/movie_poster" />
+    android:contentDescription="@string/movie_poster"
+    android:clickable="true"/>
