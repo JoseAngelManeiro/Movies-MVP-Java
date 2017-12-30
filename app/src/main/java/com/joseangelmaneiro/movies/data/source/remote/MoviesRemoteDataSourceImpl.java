@@ -37,7 +37,12 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
         movieService.getMovies(API_KEY).enqueue(new Callback<Page>() {
             @Override
             public void onResponse(Call<Page> call, Response<Page> response) {
-                handler.handle(response.body().getMovies());
+                Page page = response.body();
+                if(page!=null) {
+                    handler.handle(page.getMovies());
+                } else{
+                    handler.error();
+                }
             }
 
             @Override
