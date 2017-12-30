@@ -39,6 +39,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
         return mPresenter.getItemsCount();
     }
 
+    public void refreshData(){
+        notifyDataSetChanged();
+    }
+
 
     public class MovieHolder extends RecyclerView.ViewHolder implements MovieCellView,
             View.OnClickListener{

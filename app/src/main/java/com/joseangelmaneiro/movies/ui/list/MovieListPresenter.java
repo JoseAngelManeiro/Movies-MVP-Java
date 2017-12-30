@@ -47,8 +47,8 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         saveMovies(movieList);
         MovieListView movieListView = view.get();
         if(movieListView!=null){
-            movieListView.cancelLoadingDialog();
-            movieListView.refresh();
+            movieListView.cancelRefreshDialog();
+            movieListView.refreshList();
         }
     }
 
@@ -56,7 +56,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     public void error() {
         MovieListView movieListView = view.get();
         if(movieListView!=null){
-            movieListView.cancelLoadingDialog();
+            movieListView.cancelRefreshDialog();
             movieListView.showErrorMessage();
         }
     }

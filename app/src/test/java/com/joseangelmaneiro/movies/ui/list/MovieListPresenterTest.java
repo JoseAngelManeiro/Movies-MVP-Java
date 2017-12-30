@@ -88,8 +88,8 @@ public class MovieListPresenterTest {
 
         setMoviesAvailable(TestUtils.createMainMovieList());
 
-        verify(view).cancelLoadingDialog();
-        verify(view).refresh();
+        verify(view).cancelRefreshDialog();
+        verify(view).refreshData();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class MovieListPresenterTest {
 
         setMoviesError();
 
-        verify(view).cancelLoadingDialog();
+        verify(view).cancelRefreshDialog();
         verify(view).showErrorMessage();
     }
 
