@@ -60,7 +60,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
 
     private void setUpListView(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new MarginDecoration(this));
         adapter = new MoviesAdapter(presenter);
         recyclerView.setAdapter(adapter);
     }
