@@ -66,6 +66,10 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
 
     private void setUpRefreshView(){
         refreshLayout = (SwipeRefreshLayout)findViewById(R.id.refreshLayout);
+        refreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorPrimaryDark,
+                R.color.colorAccent);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
