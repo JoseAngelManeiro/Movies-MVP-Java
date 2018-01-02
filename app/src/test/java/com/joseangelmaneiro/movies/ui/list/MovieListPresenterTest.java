@@ -89,7 +89,7 @@ public class MovieListPresenterTest {
         setMoviesAvailable(TestUtils.createMainMovieList());
 
         verify(view).cancelRefreshDialog();
-        verify(view).refreshData();
+        verify(view).refreshList();
     }
 
     @Test
