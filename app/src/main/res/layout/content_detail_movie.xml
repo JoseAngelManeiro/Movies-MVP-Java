@@ -22,7 +22,27 @@
             android:gravity="center"
             android:paddingTop="2dp"
             android:textStyle="bold"
+            android:textSize="13dp"
             tools:text="7.5" />
+
+        <TextView
+            android:id="@+id/text_releaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/text_voteAverage"
+            android:textColor="@android:color/darker_gray"
+            tools:text="22/10/2017"/>
+
+        <TextView
+            android:id="@+id/text_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_voteAverage"
+            android:layout_marginTop="@dimen/default_margin"
+            android:textSize="18sp"
+            android:lineSpacingExtra="1dp"
+            tools:text="Thor is imprisoned on the other side of the universe and finds himself in a race against time to get back to Asgard to stop Ragnarok, the prophecy of destruction to his homeworld and the end of Asgardian civilization, at the hands of an all-powerful new threat, the ruthless Hela."/>
 
     </RelativeLayout>
 
