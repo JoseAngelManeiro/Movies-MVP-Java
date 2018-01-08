@@ -10,17 +10,20 @@ import android.support.v7.widget.Toolbar;
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.ui.Formatter;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MovieListActivity extends AppCompatActivity implements MovieListView {
 
     private MovieListPresenter presenter;
 
-    private CoordinatorLayout coordinatorLayout;
-
     private MoviesAdapter adapter;
 
-    private SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
 
     @Override
@@ -28,9 +31,9 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        setUpPresenter();
+        bindViews();
 
-        setUpRootView();
+        setUpPresenter();
 
         setUpActionBar();
 
@@ -42,6 +45,10 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
 
     }
 
+    private void bindViews(){
+        ButterKnife.bind(this);
+    }
+
     private void setUpPresenter(){
         presenter = new MovieListPresenter(
                 Injection.provideRepository(getApplicationContext()),
@@ -49,23 +56,16 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
         presenter.setView(this);
     }
 
-    private void setUpRootView(){
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-    }
-
     private void setUpActionBar(){
-        Toolbar toolbar =  (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
     private void setUpListView(){
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         adapter = new MoviesAdapter(presenter);
         recyclerView.setAdapter(adapter);
     }
 
     private void setUpRefreshView(){
-        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.refreshLayout);
         refreshLayout.setColorSchemeResources(
                 R.color.colorPrimary,
                 R.color.colorPrimaryDark,
