@@ -57,4 +57,7 @@ dependencies {
 
     testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
     androidTestCompile "org.mockito:mockito-android:$rootProject.mockitoVersion"
+
+    compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
 }

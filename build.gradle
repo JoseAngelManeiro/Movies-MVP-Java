@@ -30,6 +30,7 @@ ext {
     mockitoVersion = '2.8.47'
     espressoVersion = '3.0.1'
     testSupportVersion = '1.0.1'
+    butterKnifeVersion = '8.8.1'
 }
 
 task clean(type: Delete) {
