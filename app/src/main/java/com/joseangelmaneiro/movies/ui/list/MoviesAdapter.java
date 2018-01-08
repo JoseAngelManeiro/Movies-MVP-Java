@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.joseangelmaneiro.movies.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolder>{
@@ -47,12 +49,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
     public class MovieHolder extends RecyclerView.ViewHolder implements MovieCellView,
             View.OnClickListener{
 
-        private ImageView imageView;
+        @BindView(R.id.image) ImageView imageView;
 
         public MovieHolder(View itemView) {
             super(itemView);
 
-            imageView = (ImageView) itemView.findViewById(R.id.image);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(this);
         }
