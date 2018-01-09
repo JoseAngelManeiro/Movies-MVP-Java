@@ -38,6 +38,8 @@ public class MovieListPresenterTest {
     private ArgumentCaptor<Handler<List<Movie>>> moviesHandlerCaptor;
     @Captor
     private ArgumentCaptor<String> textCaptor;
+    @Captor
+    private ArgumentCaptor<Integer> intCaptor;
 
 
     @Before
@@ -127,14 +129,27 @@ public class MovieListPresenterTest {
 
     @Test
     public void onItemClick_SavesSelectedMovieId(){
+        int fakePosition = 0;
         List<Movie> movieList = TestUtils.createMainMovieList();
-        int itemSelected = 0;
-        int idExpected = movieList.get(itemSelected).getId();
+        int idExpected = movieList.get(fakePosition).getId();
         sut.saveMovies(movieList);
 
-        sut.onItemClick(idExpected);
+        sut.onItemClick(fakePosition);
 
         assertEquals(idExpected, sut.getSelectedMovieId());
+    }
+
+    @Test
+    public void onItemClick_InvokesNavigateToDetailScreen(){
+        int fakePosition = 0;
+        List<Movie> movieList = TestUtils.createMainMovieList();
+        int idExpected = movieList.get(fakePosition).getId();
+        sut.saveMovies(movieList);
+
+        sut.onItemClick(fakePosition);
+
+        verify(view).navigateToDetailScreen(intCaptor.capture());
+        assertEquals(idExpected, intCaptor.getValue().intValue());
     }
 
 
