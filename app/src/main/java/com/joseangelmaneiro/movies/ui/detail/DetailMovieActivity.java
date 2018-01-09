@@ -7,6 +7,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.joseangelmaneiro.movies.R;
+import com.joseangelmaneiro.movies.di.Injection;
+import com.joseangelmaneiro.movies.ui.Formatter;
 import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +17,8 @@ import butterknife.ButterKnife;
 public class DetailMovieActivity extends AppCompatActivity implements DetailMovieView {
 
     public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
+
+    private DetailMoviePresenter presenter;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.image_movie) ImageView movieImageView;
@@ -30,7 +34,11 @@ public class DetailMovieActivity extends AppCompatActivity implements DetailMovi
 
         bindViews();
 
+        setUpPresenter();
+
         setUpActionBar();
+
+        informPresenterViewIsReady();
 
     }
 
@@ -38,8 +46,21 @@ public class DetailMovieActivity extends AppCompatActivity implements DetailMovi
         ButterKnife.bind(this);
     }
 
+    private void setUpPresenter(){
+        int movieId = getIntent().getIntExtra(EXTRA_MOVIE_ID, -1);
+        presenter = new DetailMoviePresenter(
+                Injection.provideRepository(getApplicationContext()),
+                new Formatter(),
+                movieId);
+        presenter.setView(this);
+    }
+
     private void setUpActionBar(){
         setSupportActionBar(toolbar);
+    }
+
+    private void informPresenterViewIsReady(){
+        presenter.viewReady();
     }
 
     @Override
