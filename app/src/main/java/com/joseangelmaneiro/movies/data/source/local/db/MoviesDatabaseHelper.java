@@ -60,7 +60,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
                 KEY_ID + " INTEGER PRIMARY KEY," +
                 KEY_VOTE_COUNT + " INTEGER," +
                 KEY_VIDEO + " INTEGER," +
-                KEY_VOTE_AVERAGE + " REAL," +
+                KEY_VOTE_AVERAGE + " TEXT," +
                 KEY_TITLE + " TEXT," +
                 KEY_POPULARITY + " REAL," +
                 KEY_POSTERPATH + " TEXT," +
@@ -180,7 +180,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         movie.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
         movie.setVoteCount(cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT)));
         movie.setVideo(cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1);
-        movie.setVoteAverage(cursor.getFloat(cursor.getColumnIndex(KEY_VOTE_AVERAGE)));
+        movie.setVoteAverage(cursor.getString(cursor.getColumnIndex(KEY_VOTE_AVERAGE)));
         movie.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
         movie.setPopularity(cursor.getFloat(cursor.getColumnIndex(KEY_POPULARITY)));
         movie.setPosterPath(cursor.getString(cursor.getColumnIndex(KEY_POSTERPATH)));
