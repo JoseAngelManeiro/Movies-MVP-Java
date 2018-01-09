@@ -77,6 +77,10 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     public void onItemClick(int position){
         Movie movie = getMovie(position);
         saveSelectedMovieId(movie.getId());
+        MovieListView movieListView = view.get();
+        if(movieListView!=null){
+            movieListView.navigateToDetailScreen(getSelectedMovieId());
+        }
     }
 
     public void saveMovies(List<Movie> movieList){

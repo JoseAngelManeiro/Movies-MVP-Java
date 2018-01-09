@@ -13,11 +13,11 @@ import butterknife.ButterKnife;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolder>{
 
-    private MovieListPresenter mPresenter;
+    private MovieListPresenter presenter;
 
 
     public MoviesAdapter(MovieListPresenter presenter){
-        this.mPresenter = presenter;
+        this.presenter = presenter;
     }
 
     @Override
@@ -33,12 +33,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
 
     @Override
     public void onBindViewHolder(MovieHolder movieHolder, int position) {
-        mPresenter.configureCell(movieHolder, position);
+        presenter.configureCell(movieHolder, position);
     }
 
     @Override
     public int getItemCount() {
-        return mPresenter.getItemsCount();
+        return presenter.getItemsCount();
     }
 
     public void refreshData(){
@@ -69,7 +69,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
 
         @Override
         public void onClick(View view) {
-            mPresenter.onItemClick(getAdapterPosition());
+            presenter.onItemClick(getAdapterPosition());
         }
 
     }

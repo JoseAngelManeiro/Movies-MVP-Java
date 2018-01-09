@@ -9,4 +9,6 @@ public interface MovieListView {
 
     void cancelRefreshDialog();
 
+    void navigateToDetailScreen(int movieId);
+
 }

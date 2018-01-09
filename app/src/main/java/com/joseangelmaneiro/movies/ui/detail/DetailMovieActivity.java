@@ -3,6 +3,7 @@ package com.joseangelmaneiro.movies.ui.detail;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.joseangelmaneiro.movies.R;
@@ -12,6 +13,8 @@ import butterknife.ButterKnife;
 
 
 public class DetailMovieActivity extends AppCompatActivity implements DetailMovieView {
+
+    public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.image_movie) ImageView movieImageView;

@@ -1,5 +1,6 @@
 package com.joseangelmaneiro.movies.ui.list;
 
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -96,6 +99,13 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
     @Override
     public void cancelRefreshDialog() {
         refreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void navigateToDetailScreen(int movieId) {
+        Intent intent = new Intent(this, DetailMovieActivity.class);
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE_ID, movieId);
+        startActivity(intent);
     }
 
 }
