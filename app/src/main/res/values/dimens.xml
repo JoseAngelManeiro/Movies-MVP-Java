@@ -6,6 +6,6 @@
     <dimen name="item_margin">3dp</dimen>
     <dimen name="column_width">120dp</dimen>
     <dimen name="item_height">200dp</dimen>
-    <dimen name="app_bar_height">250dp</dimen>
+    <dimen name="app_bar_height">280dp</dimen>
 
 </resources>
