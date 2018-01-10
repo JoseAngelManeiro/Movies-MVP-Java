@@ -1,11 +1,11 @@
 package com.joseangelmaneiro.movies.ui.list;
 
+import com.joseangelmaneiro.movies.ui.BaseView;
 
-public interface MovieListView {
+
+public interface MovieListView extends BaseView{
 
     void refreshList();
-
-    void showErrorMessage();
 
     void cancelRefreshDialog();
 

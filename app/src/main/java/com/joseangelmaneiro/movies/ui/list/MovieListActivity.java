@@ -1,29 +1,26 @@
 package com.joseangelmaneiro.movies.ui.list;
 
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
+import com.joseangelmaneiro.movies.ui.BaseActivity;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MovieListActivity extends AppCompatActivity implements MovieListView {
+public class MovieListActivity extends BaseActivity implements MovieListView {
 
     private MovieListPresenter presenter;
 
     private MoviesAdapter adapter;
 
-    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
@@ -88,12 +85,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListVie
     @Override
     public void refreshList() {
         adapter.refreshData();
-    }
-
-    @Override
-    public void showErrorMessage() {
-        Snackbar.make(coordinatorLayout, getString(R.string.error_has_ocurred),
-                Snackbar.LENGTH_LONG).show();
     }
 
     @Override
