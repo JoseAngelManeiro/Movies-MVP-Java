@@ -1,7 +1,9 @@
 package com.joseangelmaneiro.movies.ui.detail;
 
+import com.joseangelmaneiro.movies.ui.BaseView;
 
-public interface DetailMovieView {
+
+public interface DetailMovieView extends BaseView {
 
     void displayImage(String url);
 
