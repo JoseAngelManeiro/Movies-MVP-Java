@@ -19,7 +19,7 @@ public interface TestData {
     int MAIN_MOVIE_ID = 1;
     int VOTE_COUNT = 5;
     boolean MOVIE_VIDEO = true;
-    float MAIN_VOTE_AVERAGE = 6.2f;
+    String MAIN_VOTE_AVERAGE = "6.2";
     String MAIN_MOVIE_TITLE = "Movie One";
     float MOVIE_POPULARITY = 5f;
     String POSTER_PATH = "fake_poster_path.png";
@@ -36,6 +36,6 @@ public interface TestData {
     String ALT_ORIGINAL_LANGUAGE = "EN";
     String ALT_ORIGINAL_TITLE = "alt_title";
     String ALT_RELEASE_DATE = "06/12/2017";
-    float ALT_VOTE_AVERAGE = 4.3f;
+    String ALT_VOTE_AVERAGE = "4.3";
 
 }
