@@ -52,4 +52,11 @@ public class DetailMoviePresenter implements Handler<Movie>{
         }
     }
 
+    public void navUpSelected(){
+        DetailMovieView detailMovieView = view.get();
+        if(detailMovieView!=null){
+            detailMovieView.goToBack();
+        }
+    }
+
 }

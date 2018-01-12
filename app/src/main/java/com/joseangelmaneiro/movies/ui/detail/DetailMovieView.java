@@ -15,4 +15,6 @@ public interface DetailMovieView extends BaseView {
 
     void displayOverview(String overview);
 
+    void goToBack();
+
 }
