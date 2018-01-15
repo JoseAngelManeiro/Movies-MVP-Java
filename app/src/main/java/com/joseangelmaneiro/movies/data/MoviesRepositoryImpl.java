@@ -2,6 +2,9 @@ package com.joseangelmaneiro.movies.data;
 
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
+import com.joseangelmaneiro.movies.domain.Handler;
+import com.joseangelmaneiro.movies.domain.MoviesRepository;
+
 import java.util.List;
 
 

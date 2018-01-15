@@ -2,6 +2,7 @@ package com.joseangelmaneiro.movies.data;
 
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
+import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;
