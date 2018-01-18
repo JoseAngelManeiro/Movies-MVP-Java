@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.joseangelmaneiro.movies.data.Movie;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,14 +86,14 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addMovies(List<Movie> movieList) {
+    public void addMovies(List<MovieEntity> movieList) {
         SQLiteDatabase db = getWritableDatabase();
 
         // It's a good idea to wrap our insert in a transaction.
         // This helps with performance and ensures consistency of the database.
         db.beginTransaction();
         try {
-            for(Movie movie : movieList){
+            for(MovieEntity movie : movieList){
                 ContentValues values = new ContentValues();
                 values.put(KEY_ID, movie.getId());
                 values.put(KEY_VOTE_COUNT, movie.getVoteCount());
@@ -120,8 +120,8 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Movie> getAllMovies() {
-        List<Movie> movieList = new ArrayList<>();
+    public List<MovieEntity> getAllMovies() {
+        List<MovieEntity> movieList = new ArrayList<>();
 
         String MOVIES_SELECT_QUERY = "SELECT * FROM " + TABLE_MOVIE;
 
@@ -143,8 +143,8 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         return movieList;
     }
 
-    public Movie getMovie(int id){
-        Movie movie = null;
+    public MovieEntity getMovie(int id){
+        MovieEntity movie = null;
 
         String MOVIE_SELECT_QUERY = "SELECT * FROM " + TABLE_MOVIE + " WHERE " + KEY_ID + " = " + id;
 
@@ -175,8 +175,8 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private Movie createMovie(Cursor cursor){
-        Movie movie = new Movie();
+    private MovieEntity createMovie(Cursor cursor){
+        MovieEntity movie = new MovieEntity();
         movie.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
         movie.setVoteCount(cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT)));
         movie.setVideo(cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1);

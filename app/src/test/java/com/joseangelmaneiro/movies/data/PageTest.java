@@ -1,5 +1,6 @@
 package com.joseangelmaneiro.movies.data;
 
+import com.joseangelmaneiro.movies.data.entity.PageEntity;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
@@ -10,16 +11,16 @@ public class PageTest {
 
     @Test
     public void compareTwoIdenticalPagesReturnsEquals() throws Exception {
-        Page pageOne = TestUtils.createMainPage();
-        Page pageTwo = TestUtils.createMainPage();
+        PageEntity pageOne = TestUtils.createMainPage();
+        PageEntity pageTwo = TestUtils.createMainPage();
 
         assertEquals(pageOne, pageTwo);
     }
 
     @Test
     public void compareTwoDifferentPagesReturnsNotEquals() throws Exception {
-        Page pageOne = TestUtils.createMainPage();
-        Page pageTwo = TestUtils.createAltPage();
+        PageEntity pageOne = TestUtils.createMainPage();
+        PageEntity pageTwo = TestUtils.createAltPage();
 
         assertNotEquals(pageOne, pageTwo);
     }

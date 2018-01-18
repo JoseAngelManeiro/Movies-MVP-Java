@@ -1,14 +1,14 @@
 package com.joseangelmaneiro.movies.ui.list;
 
 import com.joseangelmaneiro.movies.domain.Handler;
-import com.joseangelmaneiro.movies.data.Movie;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 
-public class MovieListPresenter implements Handler<List<Movie>>{
+public class MovieListPresenter implements Handler<List<MovieEntity>>{
 
     private MoviesRepository repository;
 
@@ -16,7 +16,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     private WeakReference<MovieListView> view;
 
-    private List<Movie> movieList;
+    private List<MovieEntity> movieList;
 
     private int selectedMovieId;
 
@@ -43,7 +43,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     @Override
-    public void handle(List<Movie> movieList) {
+    public void handle(List<MovieEntity> movieList) {
         saveMovies(movieList);
         MovieListView movieListView = view.get();
         if(movieListView!=null){
@@ -70,12 +70,12 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     public void configureCell(MovieCellView movieCellView, int position){
-        Movie movie = getMovie(position);
+        MovieEntity movie = getMovie(position);
         movieCellView.displayImage(formatter.getCompleteUrlImage(movie.getPosterPath()));
     }
 
     public void onItemClick(int position){
-        Movie movie = getMovie(position);
+        MovieEntity movie = getMovie(position);
         saveSelectedMovieId(movie.getId());
         MovieListView movieListView = view.get();
         if(movieListView!=null){
@@ -83,11 +83,11 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         }
     }
 
-    public void saveMovies(List<Movie> movieList){
+    public void saveMovies(List<MovieEntity> movieList){
         this.movieList = movieList;
     }
 
-    public Movie getMovie(int position){
+    public MovieEntity getMovie(int position){
         return movieList.get(position);
     }
 

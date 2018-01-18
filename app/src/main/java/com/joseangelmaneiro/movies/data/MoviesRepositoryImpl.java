@@ -1,5 +1,6 @@
 package com.joseangelmaneiro.movies.data;
 
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
 import com.joseangelmaneiro.movies.domain.Handler;
@@ -37,10 +38,10 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     }
 
     @Override
-    public void getMovies(final Handler<List<Movie>> handler) {
-        remoteDataSource.getMovies(new Handler<List<Movie>>() {
+    public void getMovies(final Handler<List<MovieEntity>> handler) {
+        remoteDataSource.getMovies(new Handler<List<MovieEntity>>() {
             @Override
-            public void handle(List<Movie> movieList) {
+            public void handle(List<MovieEntity> movieList) {
                 localDataSource.deleteAllMovies();
                 localDataSource.saveMovies(movieList);
                 handler.handle(movieList);
@@ -54,10 +55,10 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     }
 
     @Override
-    public void getMovie(int movieId, final Handler<Movie> handler) {
-        localDataSource.getMovie(movieId, new Handler<Movie>() {
+    public void getMovie(int movieId, final Handler<MovieEntity> handler) {
+        localDataSource.getMovie(movieId, new Handler<MovieEntity>() {
             @Override
-            public void handle(Movie movie) {
+            public void handle(MovieEntity movie) {
                 handler.handle(movie);
             }
 

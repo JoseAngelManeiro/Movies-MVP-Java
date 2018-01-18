@@ -13,7 +13,7 @@ public final class Movie {
     private final String backdropPath;
     private final String overview;
     private final String releaseDate;
-    
+
 
     public Movie(int id, String voteAverage, String title, String posterPath,
                  String backdropPath, String overview, String releaseDate) {

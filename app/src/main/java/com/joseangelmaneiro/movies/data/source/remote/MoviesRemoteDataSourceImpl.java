@@ -1,8 +1,8 @@
 package com.joseangelmaneiro.movies.data.source.remote;
 
 import com.joseangelmaneiro.movies.domain.Handler;
-import com.joseangelmaneiro.movies.data.Movie;
-import com.joseangelmaneiro.movies.data.Page;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import com.joseangelmaneiro.movies.data.entity.PageEntity;
 import com.joseangelmaneiro.movies.data.source.remote.net.MovieService;
 import java.util.List;
 import retrofit2.Call;
@@ -33,11 +33,11 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
     }
 
     @Override
-    public void getMovies(final Handler<List<Movie>> handler) {
-        movieService.getMovies(API_KEY).enqueue(new Callback<Page>() {
+    public void getMovies(final Handler<List<MovieEntity>> handler) {
+        movieService.getMovies(API_KEY).enqueue(new Callback<PageEntity>() {
             @Override
-            public void onResponse(Call<Page> call, Response<Page> response) {
-                Page page = response.body();
+            public void onResponse(Call<PageEntity> call, Response<PageEntity> response) {
+                PageEntity page = response.body();
                 if(page!=null) {
                     handler.handle(page.getMovies());
                 } else{
@@ -46,7 +46,7 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
             }
 
             @Override
-            public void onFailure(Call<Page> call, Throwable t) {
+            public void onFailure(Call<PageEntity> call, Throwable t) {
                 handler.error();
             }
         });

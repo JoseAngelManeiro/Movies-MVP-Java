@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.data;
+package com.joseangelmaneiro.movies.data.entity;
 
 import java.util.List;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Page {
+public class PageEntity {
 
     @SerializedName("page")
     private int page;
@@ -15,13 +15,13 @@ public class Page {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private List<Movie> movies;
+    private List<MovieEntity> movies;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public Page() {
+    public PageEntity() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class Page {
      * @param page
      * @param totalPages
      */
-    public Page(int page, int totalResults, int totalPages, List<Movie> movies) {
+    public PageEntity(int page, int totalResults, int totalPages, List<MovieEntity> movies) {
         super();
         this.page = page;
         this.totalResults = totalResults;
@@ -63,11 +63,11 @@ public class Page {
         this.totalPages = totalPages;
     }
 
-    public List<Movie> getMovies() {
+    public List<MovieEntity> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<Movie> movies) {
+    public void setMovies(List<MovieEntity> movies) {
         this.movies = movies;
     }
 
@@ -76,7 +76,7 @@ public class Page {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Page that = (Page) o;
+        PageEntity that = (PageEntity) o;
 
         return Objects.equals(page, that.page) &&
                 Objects.equals(totalResults, that.totalResults) &&

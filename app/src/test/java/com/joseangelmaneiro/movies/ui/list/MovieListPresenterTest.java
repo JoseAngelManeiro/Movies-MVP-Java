@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.ui.list;
 
 import com.joseangelmaneiro.movies.domain.Handler;
-import com.joseangelmaneiro.movies.data.Movie;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import com.joseangelmaneiro.movies.utils.TestUtils;
@@ -35,7 +35,7 @@ public class MovieListPresenterTest {
     @Mock
     private MovieCellView cellView;
     @Captor
-    private ArgumentCaptor<Handler<List<Movie>>> moviesHandlerCaptor;
+    private ArgumentCaptor<Handler<List<MovieEntity>>> moviesHandlerCaptor;
     @Captor
     private ArgumentCaptor<String> textCaptor;
     @Captor
@@ -130,7 +130,7 @@ public class MovieListPresenterTest {
     @Test
     public void onItemClick_SavesSelectedMovieId(){
         int fakePosition = 0;
-        List<Movie> movieList = TestUtils.createMainMovieList();
+        List<MovieEntity> movieList = TestUtils.createMainMovieList();
         int idExpected = movieList.get(fakePosition).getId();
         sut.saveMovies(movieList);
 
@@ -142,7 +142,7 @@ public class MovieListPresenterTest {
     @Test
     public void onItemClick_InvokesNavigateToDetailScreen(){
         int fakePosition = 0;
-        List<Movie> movieList = TestUtils.createMainMovieList();
+        List<MovieEntity> movieList = TestUtils.createMainMovieList();
         int idExpected = movieList.get(fakePosition).getId();
         sut.saveMovies(movieList);
 
@@ -153,7 +153,7 @@ public class MovieListPresenterTest {
     }
 
 
-    private void setMoviesAvailable(List<Movie> movieList) {
+    private void setMoviesAvailable(List<MovieEntity> movieList) {
         verify(repository).getMovies(moviesHandlerCaptor.capture());
         moviesHandlerCaptor.getValue().handle(movieList);
     }

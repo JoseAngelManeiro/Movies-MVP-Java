@@ -1,5 +1,6 @@
 package com.joseangelmaneiro.movies.data;
 
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
 import com.joseangelmaneiro.movies.domain.Handler;
@@ -18,8 +19,8 @@ import static org.mockito.Mockito.verify;
 
 public class MoviesRepositoryImplTest {
 
-    private static List<Movie> MOVIES = TestUtils.createMovieList(10);
-    private static Movie MOVIE = TestUtils.createMainMovie();
+    private static List<MovieEntity> MOVIES = TestUtils.createMovieList(10);
+    private static MovieEntity MOVIE = TestUtils.createMainMovie();
 
     private MoviesRepositoryImpl sut;
     @Mock
@@ -27,13 +28,13 @@ public class MoviesRepositoryImplTest {
     @Mock
     private MoviesRemoteDataSource remoteDataSource;
     @Mock
-    private Handler<List<Movie>> moviesHandler;
+    private Handler<List<MovieEntity>> moviesHandler;
     @Mock
-    private Handler<Movie> movieHandler;
+    private Handler<MovieEntity> movieHandler;
     @Captor
-    private ArgumentCaptor<Handler<List<Movie>>> moviesHandlerCaptor;
+    private ArgumentCaptor<Handler<List<MovieEntity>>> moviesHandlerCaptor;
     @Captor
-    private ArgumentCaptor<Handler<Movie>> movieHandlerCaptor;
+    private ArgumentCaptor<Handler<MovieEntity>> movieHandlerCaptor;
 
 
     @Before
@@ -107,7 +108,7 @@ public class MoviesRepositoryImplTest {
         moviesHandlerCaptor.getValue().error();
     }
 
-    private void setMoviesAvailable(List<Movie> movieList) {
+    private void setMoviesAvailable(List<MovieEntity> movieList) {
         verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture());
         moviesHandlerCaptor.getValue().handle(movieList);
     }
@@ -117,7 +118,7 @@ public class MoviesRepositoryImplTest {
         movieHandlerCaptor.getValue().error();
     }
 
-    private void setMovieAvailable(Movie movie) {
+    private void setMovieAvailable(MovieEntity movie) {
         verify(localDataSource).getMovie(eq(movie.getId()), movieHandlerCaptor.capture());
         movieHandlerCaptor.getValue().handle(movie);
     }

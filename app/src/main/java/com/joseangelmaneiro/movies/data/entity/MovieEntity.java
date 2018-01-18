@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.data;
+package com.joseangelmaneiro.movies.data.entity;
 
 import java.util.List;
 import java.util.Objects;
@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Movie {
+public class MovieEntity {
 
     @SerializedName("vote_count")
     private int voteCount;
@@ -41,7 +41,7 @@ public class Movie {
      * No args constructor for use in serialization
      *
      */
-    public Movie() {
+    public MovieEntity() {
     }
 
     /**
@@ -61,7 +61,7 @@ public class Movie {
      * @param video
      * @param popularity
      */
-    public Movie(int voteCount, int id, boolean video, String voteAverage, String title, float popularity, String posterPath, String originalLanguage, String originalTitle, List<Integer> genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
+    public MovieEntity(int voteCount, int id, boolean video, String voteAverage, String title, float popularity, String posterPath, String originalLanguage, String originalTitle, List<Integer> genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
         super();
         this.voteCount = voteCount;
         this.id = id;
@@ -196,7 +196,7 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Movie that = (Movie) o;
+        MovieEntity that = (MovieEntity) o;
 
         return Objects.equals(id, that.id) &&
                 Objects.equals(title, that.title) &&
