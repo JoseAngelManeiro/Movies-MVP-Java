@@ -1,6 +1,7 @@
 package com.joseangelmaneiro.movies.di;
 
 import android.content.Context;
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.data.MoviesRepositoryImpl;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
@@ -14,7 +15,8 @@ import com.joseangelmaneiro.movies.data.source.remote.net.RetrofitClient;
 public class Injection {
 
     public static MoviesRepository provideRepository(Context context){
-        return MoviesRepositoryImpl.getInstance(getLocalDataSource(context), getRemoteDataSource());
+        return MoviesRepositoryImpl.getInstance(getLocalDataSource(context),
+                getRemoteDataSource(), new EntityDataMapper());
     }
 
     private static MoviesLocalDataSource getLocalDataSource(Context context){

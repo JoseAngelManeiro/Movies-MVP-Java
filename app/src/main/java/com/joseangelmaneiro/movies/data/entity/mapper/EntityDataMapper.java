@@ -10,7 +10,7 @@ import java.util.List;
 public class EntityDataMapper {
 
 
-    EntityDataMapper(){}
+    public EntityDataMapper(){}
 
     public Movie transform(MovieEntity movieEntity){
         Movie movie = null;
