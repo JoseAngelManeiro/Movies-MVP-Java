@@ -1,13 +1,13 @@
 package com.joseangelmaneiro.movies.ui.detail;
 
 import com.joseangelmaneiro.movies.domain.Handler;
-import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import java.lang.ref.WeakReference;
 
 
-public class DetailMoviePresenter implements Handler<MovieEntity>{
+public class DetailMoviePresenter implements Handler<Movie>{
 
     private MoviesRepository repository;
 
@@ -33,7 +33,7 @@ public class DetailMoviePresenter implements Handler<MovieEntity>{
     }
 
     @Override
-    public void handle(MovieEntity movie) {
+    public void handle(Movie movie) {
         DetailMovieView detailMovieView = view.get();
         if(detailMovieView!=null){
             detailMovieView.displayImage(formatter.getCompleteUrlImage(movie.getBackdropPath()));
