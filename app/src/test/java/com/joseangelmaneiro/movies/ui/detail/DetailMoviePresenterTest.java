@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.ui.detail;
 
 import com.joseangelmaneiro.movies.domain.Handler;
-import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import com.joseangelmaneiro.movies.utils.TestUtils;
@@ -32,7 +32,7 @@ public class DetailMoviePresenterTest {
     @Mock
     DetailMovieView view;
     @Captor
-    private ArgumentCaptor<Handler<MovieEntity>> movieHandlerCaptor;
+    private ArgumentCaptor<Handler<Movie>> movieHandlerCaptor;
     @Captor
     private ArgumentCaptor<String> textCaptor;
     @Captor
@@ -74,7 +74,7 @@ public class DetailMoviePresenterTest {
 
     @Test
     public void viewReady_InvokesDisplayTitle(){
-        MovieEntity movie = TestUtils.createMainMovie();
+        Movie movie = TestUtils.createMainMovie();
         String titleExpected = movie.getTitle();
         sut.viewReady();
         setMovieAvailable(movie);
@@ -85,7 +85,7 @@ public class DetailMoviePresenterTest {
 
     @Test
     public void viewReady_InvokesDisplayVoteAverage(){
-        MovieEntity movie = TestUtils.createMainMovie();
+        Movie movie = TestUtils.createMainMovie();
         String voteAverageExpected = movie.getVoteAverage();
         sut.viewReady();
         setMovieAvailable(movie);
@@ -107,7 +107,7 @@ public class DetailMoviePresenterTest {
 
     @Test
     public void viewReady_InvokesDisplayOverview(){
-        MovieEntity movie = TestUtils.createMainMovie();
+        Movie movie = TestUtils.createMainMovie();
         String overviewExpected = movie.getOverview();
         sut.viewReady();
         setMovieAvailable(movie);
@@ -132,7 +132,7 @@ public class DetailMoviePresenterTest {
     }
 
 
-    private void setMovieAvailable(MovieEntity movie) {
+    private void setMovieAvailable(Movie movie) {
         verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture());
         movieHandlerCaptor.getValue().handle(movie);
     }

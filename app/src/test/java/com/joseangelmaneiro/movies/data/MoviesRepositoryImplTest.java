@@ -1,9 +1,11 @@
 package com.joseangelmaneiro.movies.data;
 
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
 import com.joseangelmaneiro.movies.domain.Handler;
+import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -15,12 +17,12 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class MoviesRepositoryImplTest {
 
-    private static List<MovieEntity> MOVIES = TestUtils.createMovieList(10);
-    private static MovieEntity MOVIE = TestUtils.createMainMovie();
+    private static final int MOVIE_ID = 1234;
 
     private MoviesRepositoryImpl sut;
     @Mock
@@ -28,19 +30,35 @@ public class MoviesRepositoryImplTest {
     @Mock
     private MoviesRemoteDataSource remoteDataSource;
     @Mock
-    private Handler<List<MovieEntity>> moviesHandler;
+    private EntityDataMapper entityDataMapper;
     @Mock
-    private Handler<MovieEntity> movieHandler;
+    private Handler<List<Movie>> moviesHandler;
+    @Mock
+    private Handler<Movie> movieHandler;
     @Captor
     private ArgumentCaptor<Handler<List<MovieEntity>>> moviesHandlerCaptor;
     @Captor
     private ArgumentCaptor<Handler<MovieEntity>> movieHandlerCaptor;
 
+    private List<MovieEntity> movieEntityList;
+    private MovieEntity movieEntity;
+    private List<Movie> movieList;
+    private Movie movie;
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource);
+
+        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource, entityDataMapper);
+
+        movieEntityList = TestUtils.createMainMovieEntityList();
+        movieEntity = TestUtils.createMainMovieEntity();
+        movieList = TestUtils.createMainMovieList();
+        movie = TestUtils.createMainMovie();
+
+        when(entityDataMapper.transform(movieEntityList)).thenReturn(movieList);
+        when(entityDataMapper.transform(movieEntity)).thenReturn(movie);
     }
 
     @After
@@ -52,25 +70,21 @@ public class MoviesRepositoryImplTest {
     public void getMovies_ReturnsAllMoviesFromRemoteDataSource() {
         // When calling getMovies in the repository
         sut.getMovies(moviesHandler);
-
         // Make the remote data source return data
-        setMoviesAvailable(MOVIES);
+        setMoviesAvailable(movieEntityList);
 
         // First verify that all movies are deleted from local data source
         verify(localDataSource).deleteAllMovies();
-
         // Verify that the data fetched from the remote data source was saved in local
-        verify(localDataSource).saveMovies(MOVIES);
-
+        verify(localDataSource).saveMovies(eq(movieEntityList));
         // Verify the movies from the remote data source are returned
-        verify(moviesHandler).handle(MOVIES);
+        verify(moviesHandler).handle(eq(movieList));
     }
 
     @Test
     public void getMovies_FiresErrorFromRemoteDataSource() {
         // When calling getMovies in the repository
         sut.getMovies(moviesHandler);
-
         // Make the remote data source return error
         setMoviesError();
 
@@ -81,22 +95,20 @@ public class MoviesRepositoryImplTest {
     @Test
     public void getMovie_ReturnsMovieFromLocalDataSource() {
         // When calling getMovie in the repository
-        sut.getMovie(MOVIE.getId(), movieHandler);
-
+        sut.getMovie(MOVIE_ID, movieHandler);
         // Make the local data source return data
-        setMovieAvailable(MOVIE);
+        setMovieAvailable(movieEntity);
 
         // Verify the movie from the local data source are returned
-        verify(movieHandler).handle(MOVIE);
+        verify(movieHandler).handle(movie);
     }
 
     @Test
     public void getMovie_FiresErrorFromLocalDataSource() {
         // When calling getMovie in the repository
-        sut.getMovie(MOVIE.getId(), movieHandler);
-
+        sut.getMovie(MOVIE_ID, movieHandler);
         // Make the local data source return error
-        setMovieError(MOVIE.getId());
+        setMovieError();
 
         // Verify that the error is returned
         verify(movieHandler).error();
@@ -113,13 +125,13 @@ public class MoviesRepositoryImplTest {
         moviesHandlerCaptor.getValue().handle(movieList);
     }
 
-    private void setMovieError(int movieId) {
-        verify(localDataSource).getMovie(eq(movieId), movieHandlerCaptor.capture());
+    private void setMovieError() {
+        verify(localDataSource).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture());
         movieHandlerCaptor.getValue().error();
     }
 
     private void setMovieAvailable(MovieEntity movie) {
-        verify(localDataSource).getMovie(eq(movie.getId()), movieHandlerCaptor.capture());
+        verify(localDataSource).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture());
         movieHandlerCaptor.getValue().handle(movie);
     }
 

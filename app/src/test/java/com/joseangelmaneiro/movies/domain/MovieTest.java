@@ -1,6 +1,5 @@
 package com.joseangelmaneiro.movies.domain;
 
-import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
