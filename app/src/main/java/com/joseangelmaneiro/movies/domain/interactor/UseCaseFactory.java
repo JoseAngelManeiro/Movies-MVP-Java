@@ -16,4 +16,8 @@ public class UseCaseFactory {
         return new GetMovie(repository);
     }
 
+    public UseCase getMovies(){
+        return new GetMovies(repository);
+    }
+
 }
