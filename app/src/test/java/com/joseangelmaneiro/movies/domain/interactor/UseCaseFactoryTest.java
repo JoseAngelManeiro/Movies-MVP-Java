@@ -36,4 +36,11 @@ public class UseCaseFactoryTest {
         assertTrue(useCase instanceof GetMovie);
     }
 
+    @Test
+    public void getMovies_CreatesCorrectInstance(){
+        UseCase useCase = sut.getMovies();
+
+        assertTrue(useCase instanceof GetMovies);
+    }
+
 }
