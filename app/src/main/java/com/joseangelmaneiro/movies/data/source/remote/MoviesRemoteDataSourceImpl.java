@@ -13,7 +13,7 @@ import retrofit2.Response;
 public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
 
     // TODO Put here your api key (https://developers.themoviedb.org/3/getting-started)
-    private static final String API_KEY = "";
+    private static final String API_KEY = "8f2e6e734988b4bc5eac72bd3dd62afe";
 
     private static MoviesRemoteDataSourceImpl INSTANCE;
 

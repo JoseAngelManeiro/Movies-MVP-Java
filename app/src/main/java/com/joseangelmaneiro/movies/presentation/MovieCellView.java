@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.list;
+package com.joseangelmaneiro.movies.presentation;
 
 
 public interface MovieCellView {

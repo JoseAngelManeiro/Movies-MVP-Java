@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.detail;
+package com.joseangelmaneiro.movies.presentation;
 
 import com.joseangelmaneiro.movies.ui.BaseView;
 

@@ -1,8 +1,9 @@
-package com.joseangelmaneiro.movies.ui.detail;
+package com.joseangelmaneiro.movies.presentation.presenters;
 
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.presentation.DetailMovieView;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import java.lang.ref.WeakReference;
 

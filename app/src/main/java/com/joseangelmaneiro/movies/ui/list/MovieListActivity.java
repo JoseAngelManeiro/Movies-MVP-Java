@@ -5,9 +5,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
+import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
+import com.joseangelmaneiro.movies.presentation.MovieListView;
 import com.joseangelmaneiro.movies.ui.BaseActivity;
 import com.joseangelmaneiro.movies.ui.Formatter;
 import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity;

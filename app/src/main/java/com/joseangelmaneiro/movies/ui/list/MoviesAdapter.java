@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.joseangelmaneiro.movies.presentation.MovieCellView;
+import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
 import com.squareup.picasso.Picasso;
 import com.joseangelmaneiro.movies.R;
 import butterknife.BindView;
