@@ -1,7 +1,5 @@
 package com.joseangelmaneiro.movies.presentation;
 
-import com.joseangelmaneiro.movies.ui.BaseView;
-
 
 public interface MovieListView extends BaseView{
 

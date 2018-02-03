@@ -6,7 +6,7 @@ import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;

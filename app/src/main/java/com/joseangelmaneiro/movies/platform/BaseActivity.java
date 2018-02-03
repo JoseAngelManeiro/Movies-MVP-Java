@@ -1,9 +1,10 @@
-package com.joseangelmaneiro.movies.ui;
+package com.joseangelmaneiro.movies.platform;
 
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import com.joseangelmaneiro.movies.R;
+import com.joseangelmaneiro.movies.presentation.BaseView;
 
 
 public class BaseActivity extends AppCompatActivity implements BaseView {

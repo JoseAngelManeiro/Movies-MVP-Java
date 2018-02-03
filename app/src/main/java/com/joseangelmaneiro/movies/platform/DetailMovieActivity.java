@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.detail;
+package com.joseangelmaneiro.movies.platform;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,8 +9,7 @@ import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.presentation.presenters.DetailMoviePresenter;
 import com.joseangelmaneiro.movies.presentation.DetailMovieView;
-import com.joseangelmaneiro.movies.ui.BaseActivity;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;

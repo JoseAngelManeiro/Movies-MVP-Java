@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.list;
+package com.joseangelmaneiro.movies.platform;
 
 import android.content.Context;
 import android.content.res.TypedArray;

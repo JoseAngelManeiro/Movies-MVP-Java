@@ -1,5 +1,7 @@
 package com.joseangelmaneiro.movies.ui;
 
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

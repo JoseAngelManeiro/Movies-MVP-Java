@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.ui.list;
+package com.joseangelmaneiro.movies.platform;
 
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,9 +10,8 @@ import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
-import com.joseangelmaneiro.movies.ui.BaseActivity;
-import com.joseangelmaneiro.movies.ui.Formatter;
-import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity;
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

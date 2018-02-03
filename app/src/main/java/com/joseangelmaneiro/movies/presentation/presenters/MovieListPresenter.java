@@ -5,7 +5,7 @@ import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
