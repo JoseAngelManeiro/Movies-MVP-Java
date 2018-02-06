@@ -1,5 +1,7 @@
 package com.joseangelmaneiro.movies.platform;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -27,6 +29,11 @@ public class DetailMovieActivity extends BaseActivity implements DetailMovieView
     @BindView(R.id.text_releaseDate) TextView releaseDateTextView;
     @BindView(R.id.text_overview) TextView overviewTextView;
 
+    public static void launch(Activity activity, int movieId) {
+        Intent intent = new Intent(activity, DetailMovieActivity.class);
+        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE_ID, movieId);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

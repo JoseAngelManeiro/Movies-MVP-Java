@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
+import com.joseangelmaneiro.movies.platform.navigation.Navigator;
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
@@ -95,9 +96,7 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
 
     @Override
     public void navigateToDetailScreen(int movieId) {
-        Intent intent = new Intent(this, DetailMovieActivity.class);
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE_ID, movieId);
-        startActivity(intent);
+        Navigator.navigateToDetail(this, movieId);
     }
 
 }
