@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.platform;
+package com.joseangelmaneiro.movies.platform.views;
 
 import android.app.Activity;
 import android.content.Intent;

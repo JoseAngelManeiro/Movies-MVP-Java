@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.platform;
+package com.joseangelmaneiro.movies.platform.views;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

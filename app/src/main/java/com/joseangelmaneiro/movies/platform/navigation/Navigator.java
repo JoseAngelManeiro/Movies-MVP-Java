@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.platform.navigation;
 
 import android.app.Activity;
-import com.joseangelmaneiro.movies.platform.DetailMovieActivity;
+import com.joseangelmaneiro.movies.platform.views.DetailMovieActivity;
 
 
 public class Navigator {

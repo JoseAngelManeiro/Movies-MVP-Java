@@ -1,4 +1,4 @@
-package com.joseangelmaneiro.movies.platform;
+package com.joseangelmaneiro.movies.platform.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

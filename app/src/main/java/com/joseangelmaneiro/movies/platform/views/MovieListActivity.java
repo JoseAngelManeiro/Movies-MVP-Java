@@ -1,6 +1,5 @@
-package com.joseangelmaneiro.movies.platform;
+package com.joseangelmaneiro.movies.platform.views;
 
-import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
