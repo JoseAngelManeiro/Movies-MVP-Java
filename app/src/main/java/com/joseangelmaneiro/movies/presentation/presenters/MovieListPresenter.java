@@ -2,7 +2,8 @@ package com.joseangelmaneiro.movies.presentation.presenters;
 
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
-import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.interactor.UseCase;
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class MovieListPresenter implements Handler<List<Movie>>{
 
-    private MoviesRepository repository;
+    private UseCaseFactory useCaseFactory;
 
     private Formatter formatter;
 
@@ -23,8 +24,8 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     private int selectedMovieId;
 
 
-    public MovieListPresenter(MoviesRepository repository, Formatter formatter){
-        this.repository = repository;
+    public MovieListPresenter(UseCaseFactory useCaseFactory, Formatter formatter){
+        this.useCaseFactory = useCaseFactory;
         this.formatter = formatter;
     }
 
@@ -33,15 +34,11 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     public void viewReady(){
-        invokeGetMovies();
+        invokeUseCase();
     }
 
     public void refresh(){
-        invokeGetMovies();
-    }
-
-    public void invokeGetMovies(){
-        repository.getMovies(this);
+        invokeUseCase();
     }
 
     @Override
@@ -83,6 +80,11 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         if(movieListView!=null){
             movieListView.navigateToDetailScreen(getSelectedMovieId());
         }
+    }
+
+    private void invokeUseCase(){
+        UseCase useCase = useCaseFactory.getMovies();
+        useCase.execute(this, null);
     }
 
     public void saveMovies(List<Movie> movieList){
