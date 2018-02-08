@@ -2,7 +2,9 @@ package com.joseangelmaneiro.movies.presentation.presenters;
 
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
-import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.interactor.GetMovie;
+import com.joseangelmaneiro.movies.domain.interactor.UseCase;
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.DetailMovieView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import java.lang.ref.WeakReference;
@@ -10,7 +12,7 @@ import java.lang.ref.WeakReference;
 
 public class DetailMoviePresenter implements Handler<Movie>{
 
-    private MoviesRepository repository;
+    private UseCaseFactory useCaseFactory;
 
     private Formatter formatter;
 
@@ -19,8 +21,8 @@ public class DetailMoviePresenter implements Handler<Movie>{
     private WeakReference<DetailMovieView> view;
 
 
-    public DetailMoviePresenter(MoviesRepository repository, Formatter formatter, int movieId){
-        this.repository = repository;
+    public DetailMoviePresenter(UseCaseFactory useCaseFactory, Formatter formatter, int movieId){
+        this.useCaseFactory = useCaseFactory;
         this.formatter = formatter;
         this.movieId = movieId;
     }
@@ -30,7 +32,8 @@ public class DetailMoviePresenter implements Handler<Movie>{
     }
 
     public void viewReady(){
-        repository.getMovie(movieId, this);
+        UseCase useCase = useCaseFactory.getMovie();
+        useCase.execute(this, new GetMovie.Params(movieId));
     }
 
     @Override
