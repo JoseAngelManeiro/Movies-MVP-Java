@@ -52,7 +52,7 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
 
     private void setUpPresenter(){
         presenter = new MovieListPresenter(
-                Injection.provideRepository(getApplicationContext()),
+                Injection.provideUseCaseFactory(getApplicationContext()),
                 new Formatter());
         presenter.setView(this);
     }

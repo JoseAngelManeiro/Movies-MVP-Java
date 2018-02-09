@@ -57,7 +57,7 @@ public class DetailMovieActivity extends BaseActivity implements DetailMovieView
     private void setUpPresenter(){
         int movieId = getIntent().getIntExtra(EXTRA_MOVIE_ID, -1);
         presenter = new DetailMoviePresenter(
-                Injection.provideRepository(getApplicationContext()),
+                Injection.provideUseCaseFactory(getApplicationContext()),
                 new Formatter(),
                 movieId);
         presenter.setView(this);
