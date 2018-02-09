@@ -2,7 +2,9 @@ package com.joseangelmaneiro.movies.presentation.presenters;
 
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
-import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.interactor.GetMovie;
+import com.joseangelmaneiro.movies.domain.interactor.UseCase;
+import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.DetailMovieView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import com.joseangelmaneiro.movies.utils.TestUtils;
@@ -27,7 +29,9 @@ public class DetailMoviePresenterTest {
 
     DetailMoviePresenter sut;
     @Mock
-    MoviesRepository repository;
+    UseCaseFactory useCaseFactory;
+    @Mock
+    UseCase useCase;
     @Mock
     Formatter formatter;
     @Mock
@@ -36,17 +40,16 @@ public class DetailMoviePresenterTest {
     private ArgumentCaptor<Handler<Movie>> movieHandlerCaptor;
     @Captor
     private ArgumentCaptor<String> textCaptor;
-    @Captor
-    private ArgumentCaptor<Integer> intCaptor;
 
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        sut = new DetailMoviePresenter(repository, formatter, MOVIE_ID);
+        sut = new DetailMoviePresenter(useCaseFactory, formatter, MOVIE_ID);
         sut.setView(view);
 
+        when(useCaseFactory.getMovie()).thenReturn(useCase);
     }
 
     @After
@@ -55,17 +58,21 @@ public class DetailMoviePresenterTest {
     }
 
     @Test
-    public void viewReady_InvokesGetMovie(){
+    public void viewReady_InvokesUseCase(){
+        ArgumentCaptor<GetMovie.Params> paramsArgumentCaptor = ArgumentCaptor
+                .forClass(GetMovie.Params.class);
+
         sut.viewReady();
 
-        verify(repository).getMovie(intCaptor.capture(), any(Handler.class));
-        assertEquals(MOVIE_ID, intCaptor.getValue().intValue());
+        verify(useCase).execute(any(Handler.class), paramsArgumentCaptor.capture());
+        assertEquals(MOVIE_ID, paramsArgumentCaptor.getValue().getMovieId());
     }
 
     @Test
     public void viewReady_InvokesDisplayImage(){
         String fakePath = "fake-path";
         when(formatter.getCompleteUrlImage(anyString())).thenReturn(fakePath);
+
         sut.viewReady();
         setMovieAvailable(TestUtils.createMainMovie());
 
@@ -77,6 +84,7 @@ public class DetailMoviePresenterTest {
     public void viewReady_InvokesDisplayTitle(){
         Movie movie = TestUtils.createMainMovie();
         String titleExpected = movie.getTitle();
+
         sut.viewReady();
         setMovieAvailable(movie);
 
@@ -88,6 +96,7 @@ public class DetailMoviePresenterTest {
     public void viewReady_InvokesDisplayVoteAverage(){
         Movie movie = TestUtils.createMainMovie();
         String voteAverageExpected = movie.getVoteAverage();
+
         sut.viewReady();
         setMovieAvailable(movie);
 
@@ -99,6 +108,7 @@ public class DetailMoviePresenterTest {
     public void viewReady_InvokesDisplayReleaseDate(){
         String fakeDate = "22/10/2017";
         when(formatter.formatDate(anyString())).thenReturn(fakeDate);
+
         sut.viewReady();
         setMovieAvailable(TestUtils.createMainMovie());
 
@@ -110,6 +120,7 @@ public class DetailMoviePresenterTest {
     public void viewReady_InvokesDisplayOverview(){
         Movie movie = TestUtils.createMainMovie();
         String overviewExpected = movie.getOverview();
+
         sut.viewReady();
         setMovieAvailable(movie);
 
@@ -134,12 +145,12 @@ public class DetailMoviePresenterTest {
 
 
     private void setMovieAvailable(Movie movie) {
-        verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture());
+        verify(useCase).execute(movieHandlerCaptor.capture(), any());
         movieHandlerCaptor.getValue().handle(movie);
     }
 
     private void setMoviesError() {
-        verify(repository).getMovie(eq(MOVIE_ID), movieHandlerCaptor.capture());
+        verify(useCase).execute(movieHandlerCaptor.capture(), any());
         movieHandlerCaptor.getValue().error();
     }
 
