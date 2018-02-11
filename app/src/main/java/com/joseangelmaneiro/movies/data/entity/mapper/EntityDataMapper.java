@@ -15,13 +15,13 @@ public class EntityDataMapper {
     public Movie transform(MovieEntity movieEntity){
         Movie movie = null;
         if(movieEntity != null){
-            movie = new Movie(movieEntity.getId(),
-                    movieEntity.getVoteAverage(),
-                    movieEntity.getTitle(),
-                    movieEntity.getPosterPath(),
-                    movieEntity.getBackdropPath(),
-                    movieEntity.getOverview(),
-                    movieEntity.getReleaseDate());
+            movie = new Movie(movieEntity.id,
+                    movieEntity.voteAverage,
+                    movieEntity.title,
+                    movieEntity.posterPath,
+                    movieEntity.backdropPath,
+                    movieEntity.overview,
+                    movieEntity.releaseDate);
         }
         return movie;
     }

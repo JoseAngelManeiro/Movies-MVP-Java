@@ -95,20 +95,20 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         try {
             for(MovieEntity movie : movieList){
                 ContentValues values = new ContentValues();
-                values.put(KEY_ID, movie.getId());
-                values.put(KEY_VOTE_COUNT, movie.getVoteCount());
-                values.put(KEY_VIDEO, movie.isVideo() ? 1 : 0);
-                values.put(KEY_VOTE_AVERAGE, movie.getVoteAverage());
-                values.put(KEY_TITLE, movie.getTitle());
-                values.put(KEY_POPULARITY, movie.getPopularity());
-                values.put(KEY_POSTERPATH, movie.getPosterPath());
-                values.put(KEY_ORIGINAL_LANGUAGE, movie.getOriginalLanguage());
-                values.put(KEY_ORIGINAL_TITLE, movie.getOriginalTitle());
-                values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movie.getGenreIds()));
-                values.put(KEY_BACKDROPPATH, movie.getBackdropPath());
-                values.put(KEY_ADULT, movie.isAdult() ? 1 : 0);
-                values.put(KEY_OVERVIEW, movie.getOverview());
-                values.put(KEY_RELEASEDATE, movie.getReleaseDate());
+                values.put(KEY_ID, movie.id);
+                values.put(KEY_VOTE_COUNT, movie.voteCount);
+                values.put(KEY_VIDEO, movie.video ? 1 : 0);
+                values.put(KEY_VOTE_AVERAGE, movie.voteAverage);
+                values.put(KEY_TITLE, movie.title);
+                values.put(KEY_POPULARITY, movie.popularity);
+                values.put(KEY_POSTERPATH, movie.posterPath);
+                values.put(KEY_ORIGINAL_LANGUAGE, movie.originalLanguage);
+                values.put(KEY_ORIGINAL_TITLE, movie.originalTitle);
+                values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movie.genreIds));
+                values.put(KEY_BACKDROPPATH, movie.backdropPath);
+                values.put(KEY_ADULT, movie.adult ? 1 : 0);
+                values.put(KEY_OVERVIEW, movie.overview);
+                values.put(KEY_RELEASEDATE, movie.releaseDate);
 
                 db.insertOrThrow(TABLE_MOVIE, null, values);
             }
@@ -177,21 +177,21 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
 
     private MovieEntity createMovie(Cursor cursor){
         MovieEntity movie = new MovieEntity();
-        movie.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
-        movie.setVoteCount(cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT)));
-        movie.setVideo(cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1);
-        movie.setVoteAverage(cursor.getString(cursor.getColumnIndex(KEY_VOTE_AVERAGE)));
-        movie.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
-        movie.setPopularity(cursor.getFloat(cursor.getColumnIndex(KEY_POPULARITY)));
-        movie.setPosterPath(cursor.getString(cursor.getColumnIndex(KEY_POSTERPATH)));
-        movie.setOriginalLanguage(cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_LANGUAGE)));
-        movie.setOriginalTitle(cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_TITLE)));
-        movie.setGenreIds(DBUtils.transformStringToIntegerList(
-                cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS))));
-        movie.setBackdropPath(cursor.getString(cursor.getColumnIndex(KEY_BACKDROPPATH)));
-        movie.setAdult(cursor.getInt(cursor.getColumnIndex(KEY_ADULT)) == 1);
-        movie.setOverview(cursor.getString(cursor.getColumnIndex(KEY_OVERVIEW)));
-        movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(KEY_RELEASEDATE)));
+        movie.id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+        movie.voteCount = cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT));
+        movie.video = cursor.getInt(cursor.getColumnIndex(KEY_VIDEO)) == 1;
+        movie.voteAverage = cursor.getString(cursor.getColumnIndex(KEY_VOTE_AVERAGE));
+        movie.title = cursor.getString(cursor.getColumnIndex(KEY_TITLE));
+        movie.popularity = cursor.getFloat(cursor.getColumnIndex(KEY_POPULARITY));
+        movie.posterPath = cursor.getString(cursor.getColumnIndex(KEY_POSTERPATH));
+        movie.originalLanguage = cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_LANGUAGE));
+        movie.originalTitle = cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_TITLE));
+        movie.genreIds = DBUtils.transformStringToIntegerList(
+                cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS)));
+        movie.backdropPath = cursor.getString(cursor.getColumnIndex(KEY_BACKDROPPATH));
+        movie.adult = cursor.getInt(cursor.getColumnIndex(KEY_ADULT)) == 1;
+        movie.overview = cursor.getString(cursor.getColumnIndex(KEY_OVERVIEW));
+        movie.releaseDate = cursor.getString(cursor.getColumnIndex(KEY_RELEASEDATE));
         return movie;
     }
 

@@ -39,7 +39,7 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
             public void onResponse(Call<PageEntity> call, Response<PageEntity> response) {
                 PageEntity page = response.body();
                 if(page!=null) {
-                    handler.handle(page.getMovies());
+                    handler.handle(page.movies);
                 } else{
                     handler.error();
                 }
