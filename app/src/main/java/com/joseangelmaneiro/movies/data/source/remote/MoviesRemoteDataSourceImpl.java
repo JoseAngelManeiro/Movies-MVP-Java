@@ -1,5 +1,7 @@
 package com.joseangelmaneiro.movies.data.source.remote;
 
+import com.joseangelmaneiro.movies.data.exception.NetworkConnectionException;
+import com.joseangelmaneiro.movies.data.exception.ServiceException;
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.entity.PageEntity;
@@ -37,17 +39,16 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
         movieService.getMovies(API_KEY).enqueue(new Callback<PageEntity>() {
             @Override
             public void onResponse(Call<PageEntity> call, Response<PageEntity> response) {
-                PageEntity page = response.body();
-                if(page!=null) {
-                    handler.handle(page.movies);
-                } else{
-                    handler.error(new Exception());
+                if(response.isSuccessful()){
+                    handler.handle(response.body().movies);
+                } else {
+                    handler.error(new ServiceException());
                 }
             }
 
             @Override
             public void onFailure(Call<PageEntity> call, Throwable t) {
-                handler.error(new Exception());
+                handler.error(new NetworkConnectionException());
             }
         });
     }
