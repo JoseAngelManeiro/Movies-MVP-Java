@@ -58,7 +58,10 @@ public class MovieEntity {
      * @param video
      * @param popularity
      */
-    public MovieEntity(int voteCount, int id, boolean video, String voteAverage, String title, float popularity, String posterPath, String originalLanguage, String originalTitle, List<Integer> genreIds, String backdropPath, boolean adult, String overview, String releaseDate) {
+    public MovieEntity(int voteCount, int id, boolean video, String voteAverage, String title,
+                       float popularity, String posterPath, String originalLanguage,
+                       String originalTitle, List<Integer> genreIds, String backdropPath,
+                       boolean adult, String overview, String releaseDate) {
         super();
         this.voteCount = voteCount;
         this.id = id;

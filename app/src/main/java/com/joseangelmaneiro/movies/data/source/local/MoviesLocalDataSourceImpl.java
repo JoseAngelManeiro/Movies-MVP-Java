@@ -25,33 +25,23 @@ public class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
     }
 
     @Override
-    public void getMovies(Handler<List<MovieEntity>> handler) {
-        List<MovieEntity> movieList = moviesDatabaseHelper.getAllMovies();
-        if(movieList!=null && !movieList.isEmpty()){
-            handler.handle(movieList);
-        } else{
-            handler.error();
-        }
+    public void getAll(Handler<List<MovieEntity>> handler) {
+        handler.handle(moviesDatabaseHelper.getAll());
     }
 
     @Override
-    public void getMovie(int movieId, Handler<MovieEntity> handler) {
-        MovieEntity movie = moviesDatabaseHelper.getMovie(movieId);
-        if(movie!=null){
-            handler.handle(movie);
-        } else{
-            handler.error();
-        }
+    public void get(int movieId, Handler<MovieEntity> handler) {
+        handler.handle(moviesDatabaseHelper.get(movieId));
     }
 
     @Override
-    public void saveMovies(List<MovieEntity> movieList) {
-        moviesDatabaseHelper.addMovies(movieList);
+    public void save(List<MovieEntity> movieList) {
+        moviesDatabaseHelper.save(movieList);
     }
 
     @Override
-    public void deleteAllMovies() {
-        moviesDatabaseHelper.deleteAllMovies();
+    public void deleteAll() {
+        moviesDatabaseHelper.deleteAll();
     }
 
 }

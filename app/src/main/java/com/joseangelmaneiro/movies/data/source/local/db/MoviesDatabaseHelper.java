@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,96 +85,63 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addMovies(List<MovieEntity> movieList) {
+    public void deleteAll() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(TABLE_MOVIE, null, null);
+    }
+
+    public void save(List<MovieEntity> movieEntityList) {
         SQLiteDatabase db = getWritableDatabase();
 
         // It's a good idea to wrap our insert in a transaction.
         // This helps with performance and ensures consistency of the database.
         db.beginTransaction();
-        try {
-            for(MovieEntity movie : movieList){
-                ContentValues values = new ContentValues();
-                values.put(KEY_ID, movie.id);
-                values.put(KEY_VOTE_COUNT, movie.voteCount);
-                values.put(KEY_VIDEO, movie.video ? 1 : 0);
-                values.put(KEY_VOTE_AVERAGE, movie.voteAverage);
-                values.put(KEY_TITLE, movie.title);
-                values.put(KEY_POPULARITY, movie.popularity);
-                values.put(KEY_POSTERPATH, movie.posterPath);
-                values.put(KEY_ORIGINAL_LANGUAGE, movie.originalLanguage);
-                values.put(KEY_ORIGINAL_TITLE, movie.originalTitle);
-                values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movie.genreIds));
-                values.put(KEY_BACKDROPPATH, movie.backdropPath);
-                values.put(KEY_ADULT, movie.adult ? 1 : 0);
-                values.put(KEY_OVERVIEW, movie.overview);
-                values.put(KEY_RELEASEDATE, movie.releaseDate);
-
-                db.insertOrThrow(TABLE_MOVIE, null, values);
-            }
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            Log.d("MoviesDB", "Error while trying to add movie to database");
-        } finally {
-            db.endTransaction();
+        for(MovieEntity movieEntity : movieEntityList){
+            db.insert(TABLE_MOVIE, null, createContentValues(movieEntity));
         }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
-    public List<MovieEntity> getAllMovies() {
-        List<MovieEntity> movieList = new ArrayList<>();
+    private ContentValues createContentValues(MovieEntity movieEntity){
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, movieEntity.id);
+        values.put(KEY_VOTE_COUNT, movieEntity.voteCount);
+        values.put(KEY_VIDEO, movieEntity.video ? 1 : 0);
+        values.put(KEY_VOTE_AVERAGE, movieEntity.voteAverage);
+        values.put(KEY_TITLE, movieEntity.title);
+        values.put(KEY_POPULARITY, movieEntity.popularity);
+        values.put(KEY_POSTERPATH, movieEntity.posterPath);
+        values.put(KEY_ORIGINAL_LANGUAGE, movieEntity.originalLanguage);
+        values.put(KEY_ORIGINAL_TITLE, movieEntity.originalTitle);
+        values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movieEntity.genreIds));
+        values.put(KEY_BACKDROPPATH, movieEntity.backdropPath);
+        values.put(KEY_ADULT, movieEntity.adult ? 1 : 0);
+        values.put(KEY_OVERVIEW, movieEntity.overview);
+        values.put(KEY_RELEASEDATE, movieEntity.releaseDate);
+        return values;
+    }
 
-        String MOVIES_SELECT_QUERY = "SELECT * FROM " + TABLE_MOVIE;
-
+    public MovieEntity get(int id){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(MOVIES_SELECT_QUERY, null);
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    movieList.add(createMovie(cursor));
-                } while(cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d("MoviesDB", "Error while trying to get movies from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
+        String sql = "SELECT * FROM " + TABLE_MOVIE + " WHERE " + KEY_ID + " = " + id;
+        MovieEntity movieEntity = new MovieEntity();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                movieEntity = createMovieEntity(cursor);
+            } while(cursor.moveToNext());
         }
-        return movieList;
+
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return movieEntity;
     }
 
-    public MovieEntity getMovie(int id){
-        MovieEntity movie = null;
-
-        String MOVIE_SELECT_QUERY = "SELECT * FROM " + TABLE_MOVIE + " WHERE " + KEY_ID + " = " + id;
-
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(MOVIE_SELECT_QUERY, null);
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    movie = createMovie(cursor);
-                } while(cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            Log.d("MoviesDB", "Error while trying to get movie from database");
-        } finally {
-            if (cursor != null && !cursor.isClosed()) {
-                cursor.close();
-            }
-        }
-        return movie;
-    }
-
-    public void deleteAllMovies() {
-        SQLiteDatabase db = getWritableDatabase();
-        try {
-            db.delete(TABLE_MOVIE, null, null);
-        } catch (Exception e) {
-            Log.d("MoviesDB", "Error while trying to delete all movies");
-        }
-    }
-
-    private MovieEntity createMovie(Cursor cursor){
+    private MovieEntity createMovieEntity(Cursor cursor){
         MovieEntity movie = new MovieEntity();
         movie.id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
         movie.voteCount = cursor.getInt(cursor.getColumnIndex(KEY_VOTE_COUNT));
@@ -193,6 +159,25 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         movie.overview = cursor.getString(cursor.getColumnIndex(KEY_OVERVIEW));
         movie.releaseDate = cursor.getString(cursor.getColumnIndex(KEY_RELEASEDATE));
         return movie;
+    }
+
+    public List<MovieEntity> getAll() {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_MOVIE;
+        List<MovieEntity> movieEntityList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                movieEntityList.add(createMovieEntity(cursor));
+            } while(cursor.moveToNext());
+        }
+
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return movieEntityList;
     }
 
 }

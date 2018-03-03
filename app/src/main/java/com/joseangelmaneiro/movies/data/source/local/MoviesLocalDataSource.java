@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface MoviesLocalDataSource {
 
-    void getMovies(Handler<List<MovieEntity>> handler);
+    void getAll(Handler<List<MovieEntity>> handler);
 
-    void getMovie(int movieId, Handler<MovieEntity> handler);
+    void get(int movieId, Handler<MovieEntity> handler);
 
-    void saveMovies(List<MovieEntity> movieList);
+    void save(List<MovieEntity> movieEntityList);
 
-    void deleteAllMovies();
+    void deleteAll();
 
 }
