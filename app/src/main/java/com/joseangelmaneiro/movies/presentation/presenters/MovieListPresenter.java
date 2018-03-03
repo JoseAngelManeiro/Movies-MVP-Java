@@ -56,7 +56,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         MovieListView movieListView = view.get();
         if(movieListView!=null){
             movieListView.cancelRefreshDialog();
-            movieListView.showErrorMessage();
+            movieListView.showErrorMessage(exception.getMessage());
         }
     }
 

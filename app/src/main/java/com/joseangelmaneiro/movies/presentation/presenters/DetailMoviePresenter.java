@@ -49,12 +49,7 @@ public class DetailMoviePresenter implements Handler<Movie>{
     }
 
     @Override
-    public void error(Exception exception) {
-        DetailMovieView detailMovieView = view.get();
-        if(detailMovieView!=null){
-            detailMovieView.showErrorMessage();
-        }
-    }
+    public void error(Exception ignored) { }
 
     public void navUpSelected(){
         DetailMovieView detailMovieView = view.get();

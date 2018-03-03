@@ -3,6 +3,6 @@ package com.joseangelmaneiro.movies.presentation;
 
 public interface BaseView {
 
-    void showErrorMessage();
+    void showErrorMessage(String message);
 
 }
