@@ -103,17 +103,6 @@ public class MoviesRepositoryImplTest {
         verify(movieHandler).handle(movie);
     }
 
-    @Test
-    public void getMovie_FiresErrorFromLocalDataSource() {
-        // When calling getAll in the repository
-        sut.getMovie(MOVIE_ID, movieHandler);
-        // Make the local data source return error
-        setMovieError();
-
-        // Verify that the error is returned
-        verify(movieHandler).error();
-    }
-
 
     private void setMoviesError() {
         verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture());
@@ -123,11 +112,6 @@ public class MoviesRepositoryImplTest {
     private void setMoviesAvailable(List<MovieEntity> movieList) {
         verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture());
         moviesHandlerCaptor.getValue().handle(movieList);
-    }
-
-    private void setMovieError() {
-        verify(localDataSource).get(eq(MOVIE_ID), movieHandlerCaptor.capture());
-        movieHandlerCaptor.getValue().error();
     }
 
     private void setMovieAvailable(MovieEntity movie) {
