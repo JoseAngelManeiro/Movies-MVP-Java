@@ -24,8 +24,8 @@ public class GetMovies implements UseCase<List<Movie>, Void> {
             }
 
             @Override
-            public void error() {
-                handler.error();
+            public void error(Exception exception) {
+                handler.error(exception);
             }
         });
     }

@@ -41,13 +41,13 @@ public class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
                 if(page!=null) {
                     handler.handle(page.movies);
                 } else{
-                    handler.error();
+                    handler.error(new Exception());
                 }
             }
 
             @Override
             public void onFailure(Call<PageEntity> call, Throwable t) {
-                handler.error();
+                handler.error(new Exception());
             }
         });
     }

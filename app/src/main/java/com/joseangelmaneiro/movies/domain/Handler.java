@@ -5,6 +5,6 @@ public interface Handler<T> {
 
     void handle(T result);
 
-    void error();
+    void error(Exception exception);
 
 }

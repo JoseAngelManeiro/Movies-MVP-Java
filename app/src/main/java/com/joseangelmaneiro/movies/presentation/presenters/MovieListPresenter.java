@@ -52,7 +52,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     @Override
-    public void error() {
+    public void error(Exception exception) {
         MovieListView movieListView = view.get();
         if(movieListView!=null){
             movieListView.cancelRefreshDialog();

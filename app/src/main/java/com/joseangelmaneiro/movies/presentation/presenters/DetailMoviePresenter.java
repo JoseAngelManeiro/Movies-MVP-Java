@@ -49,7 +49,7 @@ public class DetailMoviePresenter implements Handler<Movie>{
     }
 
     @Override
-    public void error() {
+    public void error(Exception exception) {
         DetailMovieView detailMovieView = view.get();
         if(detailMovieView!=null){
             detailMovieView.showErrorMessage();

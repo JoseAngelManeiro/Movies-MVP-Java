@@ -53,8 +53,8 @@ public class MoviesRepositoryImpl implements MoviesRepository {
                 handler.handle(entityDataMapper.transform(movieEntityList));
             }
             @Override
-            public void error() {
-                handler.error();
+            public void error(Exception exception) {
+                handler.error(exception);
             }
         });
     }
@@ -68,7 +68,7 @@ public class MoviesRepositoryImpl implements MoviesRepository {
             }
 
             @Override
-            public void error() { }
+            public void error(Exception ignored) { }
         });
     }
 
