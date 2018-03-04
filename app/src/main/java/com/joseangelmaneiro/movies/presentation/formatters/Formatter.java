@@ -8,17 +8,11 @@ import java.util.Locale;
 
 public class Formatter {
 
-    public static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
-
     private static final String SERVER_DATE_FORMAT = "yyyy-MM-dd";
     private static final String APP_DATE_FORMAT = "dd/MM/yyyy";
 
 
     public Formatter(){}
-
-    public String getCompleteUrlImage(String posterPath){
-        return BASE_URL_IMAGE + posterPath;
-    }
 
     public String formatDate(String serverDate){
         SimpleDateFormat serverDateFormat = new SimpleDateFormat(SERVER_DATE_FORMAT,
