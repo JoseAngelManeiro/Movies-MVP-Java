@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.List;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -68,45 +69,51 @@ public class MoviesRepositoryImplTest {
 
     @Test
     public void getMovies_ReturnsAllMoviesFromRemoteDataSource() {
-        // When calling getAll in the repository
-        sut.getMovies(moviesHandler);
-        // Make the remote data source return data
-        setMoviesAvailable(movieEntityList);
+        givenAValidListFromRemote();
 
-        // First verify that all movies are deleted from local data source
-        verify(localDataSource).deleteAll();
-        // Verify that the data fetched from the remote data source was saved in local
-        verify(localDataSource).save(eq(movieEntityList));
-        // Verify the movies from the remote data source are returned
-        verify(moviesHandler).handle(eq(movieList));
+        thenSaveInLocalAndReturnList();
     }
 
     @Test
     public void getMovies_FiresErrorFromRemoteDataSource() {
-        // When calling getAll in the repository
-        sut.getMovies(moviesHandler);
-        // Make the remote data source return error
-        setMoviesError();
+        givenAExceptionFromRemote();
 
-        // Verify that the error is returned
-        verify(moviesHandler).error();
+        verify(moviesHandler).error(any(Exception.class));
     }
 
     @Test
     public void getMovie_ReturnsMovieFromLocalDataSource() {
-        // When calling getAll in the repository
-        sut.getMovie(MOVIE_ID, movieHandler);
-        // Make the local data source return data
-        setMovieAvailable(movieEntity);
+        givenAValidElementFromLocal();
 
-        // Verify the movie from the local data source are returned
         verify(movieHandler).handle(movie);
     }
 
 
-    private void setMoviesError() {
-        verify(remoteDataSource).getAll(moviesHandlerCaptor.capture());
-        moviesHandlerCaptor.getValue().error();
+    private void givenAValidListFromRemote(){
+        sut.getMovies(moviesHandler);
+        setMoviesAvailable(movieEntityList);
+    }
+
+    private void thenSaveInLocalAndReturnList(){
+        verify(localDataSource).deleteAll();
+        verify(localDataSource).save(eq(movieEntityList));
+        verify(moviesHandler).handle(eq(movieList));
+    }
+
+    private void givenAExceptionFromRemote(){
+        sut.getMovies(moviesHandler);
+        setMoviesError(new Exception());
+    }
+
+    private void givenAValidElementFromLocal(){
+        sut.getMovie(MOVIE_ID, movieHandler);
+        setMovieAvailable(movieEntity);
+    }
+
+    private void setMoviesError(Exception exception) {
+        ArgumentCaptor<Handler<List<MovieEntity>>> argumentCaptor = ArgumentCaptor.forClass(Handler.class);
+        verify(remoteDataSource).getAll(argumentCaptor.capture());
+        argumentCaptor.getValue().error(exception);
     }
 
     private void setMoviesAvailable(List<MovieEntity> movieList) {

@@ -4,7 +4,6 @@ import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import com.joseangelmaneiro.movies.utils.TestUtils;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -61,23 +59,10 @@ public class GetMovieTest {
         verify(handler).handle(eq(movie));
     }
 
-    @Test
-    public void execute_FiresError(){
-        sut.execute(handler, new GetMovie.Params(fakeMovieId));
-        setError();
-
-        verify(handler).error();
-    }
-
 
     private void setMovieAvailable(Movie movie){
         verify(repository).getMovie(eq(fakeMovieId), movieCaptor.capture());
         movieCaptor.getValue().handle(movie);
-    }
-
-    private void setError(){
-        verify(repository).getMovie(eq(fakeMovieId), movieCaptor.capture());
-        movieCaptor.getValue().error();
     }
 
 }

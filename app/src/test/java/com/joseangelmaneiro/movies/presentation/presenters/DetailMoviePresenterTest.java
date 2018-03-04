@@ -70,14 +70,12 @@ public class DetailMoviePresenterTest {
 
     @Test
     public void viewReady_InvokesDisplayImage(){
-        String fakePath = "fake-path";
-        when(formatter.getCompleteUrlImage(anyString())).thenReturn(fakePath);
+        Movie movie = TestUtils.createMainMovie();
 
         sut.viewReady();
-        setMovieAvailable(TestUtils.createMainMovie());
+        setMovieAvailable(movie);
 
-        verify(view).displayImage(textCaptor.capture());
-        assertEquals(fakePath, textCaptor.getValue());
+        verify(view).displayImage(eq(movie.getBackdropPath()));
     }
 
     @Test
@@ -129,14 +127,6 @@ public class DetailMoviePresenterTest {
     }
 
     @Test
-    public void viewReady_FiresErrorMessage(){
-        sut.viewReady();
-        setMoviesError();
-
-        verify(view).showErrorMessage();
-    }
-
-    @Test
     public void navUpSelected_InvokesGoToBack(){
         sut.navUpSelected();
 
@@ -147,11 +137,6 @@ public class DetailMoviePresenterTest {
     private void setMovieAvailable(Movie movie) {
         verify(useCase).execute(movieHandlerCaptor.capture(), any());
         movieHandlerCaptor.getValue().handle(movie);
-    }
-
-    private void setMoviesError() {
-        verify(useCase).execute(movieHandlerCaptor.capture(), any());
-        movieHandlerCaptor.getValue().error();
     }
 
 }

@@ -23,9 +23,7 @@ public class GetMovie implements UseCase<Movie, GetMovie.Params> {
             }
 
             @Override
-            public void error(Exception exception) {
-                handler.error(exception);
-            }
+            public void error(Exception ignored) {}
         });
     }
 

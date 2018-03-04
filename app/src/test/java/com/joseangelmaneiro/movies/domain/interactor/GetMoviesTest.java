@@ -61,9 +61,9 @@ public class GetMoviesTest {
     @Test
     public void execute_FiresError(){
         sut.execute(handler, null);
-        setError();
+        setError(new Exception());
 
-        verify(handler).error();
+        verify(handler).error(any(Exception.class));
     }
 
 
@@ -72,9 +72,9 @@ public class GetMoviesTest {
         movieListCaptor.getValue().handle(movieList);
     }
 
-    private void setError(){
+    private void setError(Exception exception){
         verify(repository).getMovies(movieListCaptor.capture());
-        movieListCaptor.getValue().error();
+        movieListCaptor.getValue().error(exception);
     }
 
 }

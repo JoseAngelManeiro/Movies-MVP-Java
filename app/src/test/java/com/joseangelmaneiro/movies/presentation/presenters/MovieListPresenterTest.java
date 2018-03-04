@@ -6,7 +6,6 @@ import com.joseangelmaneiro.movies.domain.interactor.UseCase;
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
-import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +19,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,8 +34,6 @@ public class MovieListPresenterTest {
     UseCaseFactory useCaseFactory;
     @Mock
     UseCase useCase;
-    @Mock
-    private Formatter formatter;
     @Mock
     private MovieListView view;
     @Mock
@@ -52,7 +50,7 @@ public class MovieListPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        sut = new MovieListPresenter(useCaseFactory, formatter);
+        sut = new MovieListPresenter(useCaseFactory);
         sut.setView(view);
 
         when(useCaseFactory.getMovies()).thenReturn(useCase);
@@ -101,11 +99,14 @@ public class MovieListPresenterTest {
 
     @Test
     public void viewReady_FiresErrorMessage(){
+        String errorMessage = "Error message";
+        Exception exception = new Exception(errorMessage);
+
         sut.viewReady();
-        setMoviesError();
+        setMoviesError(exception);
 
         verify(view).cancelRefreshDialog();
-        verify(view).showErrorMessage();
+        verify(view).showErrorMessage(eq(errorMessage));
     }
 
     @Test
@@ -125,13 +126,14 @@ public class MovieListPresenterTest {
 
     @Test
     public void configureCell_DisplaysImage(){
-        when(formatter.getCompleteUrlImage(anyString())).thenReturn(URL_TO_DISPLAY);
-        sut.saveMovies(TestUtils.createMainMovieList());
+        int fakePosition = 1;
+        List<Movie> movieList = TestUtils.createMainMovieList();
+        Movie movieToConfigure = movieList.get(fakePosition);
+        sut.saveMovies(movieList);
 
-        sut.configureCell(cellView, 1);
+        sut.configureCell(cellView, fakePosition);
 
-        verify(cellView).displayImage(textCaptor.capture());
-        assertEquals(URL_TO_DISPLAY, textCaptor.getValue());
+        verify(cellView).displayImage(eq(movieToConfigure.getPosterPath()));
     }
 
     @Test
@@ -165,9 +167,9 @@ public class MovieListPresenterTest {
         moviesHandlerCaptor.getValue().handle(movieList);
     }
 
-    private void setMoviesError() {
+    private void setMoviesError(Exception exception) {
         verify(useCase).execute(moviesHandlerCaptor.capture(), isNull());
-        moviesHandlerCaptor.getValue().error();
+        moviesHandlerCaptor.getValue().error(exception);
     }
 
 }

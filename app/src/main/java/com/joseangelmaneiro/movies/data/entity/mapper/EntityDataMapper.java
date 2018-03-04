@@ -9,7 +9,7 @@ import java.util.List;
 // Mapper class used to transform MovieEntity, in the data layer, to Movie, in the domain layer.
 public class EntityDataMapper {
 
-    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
+    public static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
     public EntityDataMapper(){}
 
