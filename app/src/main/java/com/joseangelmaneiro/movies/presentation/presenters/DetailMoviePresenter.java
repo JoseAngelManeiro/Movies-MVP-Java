@@ -40,7 +40,7 @@ public class DetailMoviePresenter implements Handler<Movie>{
     public void handle(Movie movie) {
         DetailMovieView detailMovieView = view.get();
         if(detailMovieView!=null){
-            detailMovieView.displayImage(formatter.getCompleteUrlImage(movie.getBackdropPath()));
+            detailMovieView.displayImage(movie.getBackdropPath());
             detailMovieView.displayTitle(movie.getTitle());
             detailMovieView.displayVoteAverage(movie.getVoteAverage());
             detailMovieView.displayReleaseDate(formatter.formatDate(movie.getReleaseDate()));

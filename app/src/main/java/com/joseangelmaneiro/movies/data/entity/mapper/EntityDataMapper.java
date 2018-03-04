@@ -9,22 +9,9 @@ import java.util.List;
 // Mapper class used to transform MovieEntity, in the data layer, to Movie, in the domain layer.
 public class EntityDataMapper {
 
+    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
     public EntityDataMapper(){}
-
-    public Movie transform(MovieEntity movieEntity){
-        Movie movie = null;
-        if(movieEntity != null){
-            movie = new Movie(movieEntity.id,
-                    movieEntity.voteAverage,
-                    movieEntity.title,
-                    movieEntity.posterPath,
-                    movieEntity.backdropPath,
-                    movieEntity.overview,
-                    movieEntity.releaseDate);
-        }
-        return movie;
-    }
 
     public List<Movie> transform(List<MovieEntity> movieEntityList){
         List<Movie> movieList = new ArrayList<>();
@@ -35,6 +22,24 @@ public class EntityDataMapper {
             }
         }
         return movieList;
+    }
+
+    public Movie transform(MovieEntity movieEntity){
+        Movie movie = null;
+        if(movieEntity != null){
+            movie = new Movie(movieEntity.id,
+                    movieEntity.voteAverage,
+                    movieEntity.title,
+                    completeUrl(movieEntity.posterPath),
+                    completeUrl(movieEntity.backdropPath),
+                    movieEntity.overview,
+                    movieEntity.releaseDate);
+        }
+        return movie;
+    }
+
+    private String completeUrl(String path){
+        return BASE_URL_IMAGE + path;
     }
 
 }

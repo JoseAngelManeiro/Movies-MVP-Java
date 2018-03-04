@@ -6,7 +6,6 @@ import com.joseangelmaneiro.movies.domain.interactor.UseCase;
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
-import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -15,8 +14,6 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     private UseCaseFactory useCaseFactory;
 
-    private Formatter formatter;
-
     private WeakReference<MovieListView> view;
 
     private List<Movie> movieList;
@@ -24,9 +21,8 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     private int selectedMovieId;
 
 
-    public MovieListPresenter(UseCaseFactory useCaseFactory, Formatter formatter){
+    public MovieListPresenter(UseCaseFactory useCaseFactory){
         this.useCaseFactory = useCaseFactory;
-        this.formatter = formatter;
     }
 
     public void setView(MovieListView movieListView){
@@ -70,7 +66,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     public void configureCell(MovieCellView movieCellView, int position){
         Movie movie = getMovie(position);
-        movieCellView.displayImage(formatter.getCompleteUrlImage(movie.getPosterPath()));
+        movieCellView.displayImage(movie.getPosterPath());
     }
 
     public void onItemClick(int position){
