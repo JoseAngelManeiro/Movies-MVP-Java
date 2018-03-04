@@ -105,12 +105,12 @@ public class MoviesRepositoryImplTest {
 
 
     private void setMoviesError() {
-        verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture());
+        verify(remoteDataSource).getAll(moviesHandlerCaptor.capture());
         moviesHandlerCaptor.getValue().error();
     }
 
     private void setMoviesAvailable(List<MovieEntity> movieList) {
-        verify(remoteDataSource).getMovies(moviesHandlerCaptor.capture());
+        verify(remoteDataSource).getAll(moviesHandlerCaptor.capture());
         moviesHandlerCaptor.getValue().handle(movieList);
     }
 

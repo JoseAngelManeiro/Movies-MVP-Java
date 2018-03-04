@@ -45,7 +45,7 @@ public class MoviesRepositoryImpl implements MoviesRepository {
 
     @Override
     public void getMovies(final Handler<List<Movie>> handler) {
-        remoteDataSource.getMovies(new Handler<List<MovieEntity>>() {
+        remoteDataSource.getAll(new Handler<List<MovieEntity>>() {
             @Override
             public void handle(List<MovieEntity> movieEntityList) {
                 localDataSource.deleteAll();

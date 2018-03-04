@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MoviesRemoteDataSource {
 
-    void getMovies(Handler<List<MovieEntity>> handler);
+    void getAll(Handler<List<MovieEntity>> handler);
 
 }
