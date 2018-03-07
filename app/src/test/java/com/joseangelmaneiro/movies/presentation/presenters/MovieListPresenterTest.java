@@ -11,14 +11,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
@@ -26,8 +24,6 @@ import static org.mockito.Mockito.when;
 
 
 public class MovieListPresenterTest {
-
-    private static final String URL_TO_DISPLAY = "fake_url";
 
     private MovieListPresenter sut;
     @Mock
@@ -40,8 +36,6 @@ public class MovieListPresenterTest {
     private MovieCellView cellView;
     @Captor
     private ArgumentCaptor<Handler<List<Movie>>> moviesHandlerCaptor;
-    @Captor
-    private ArgumentCaptor<String> textCaptor;
     @Captor
     private ArgumentCaptor<Integer> intCaptor;
 
