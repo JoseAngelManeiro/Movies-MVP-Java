@@ -51,7 +51,7 @@ public class MoviesRepositoryImplTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        sut = MoviesRepositoryImpl.getInstance(localDataSource, remoteDataSource, entityDataMapper);
+        sut = new MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper);
 
         movieEntityList = TestUtils.createMainMovieEntityList();
         movieEntity = TestUtils.createMainMovieEntity();
@@ -64,7 +64,11 @@ public class MoviesRepositoryImplTest {
 
     @After
     public void destroyRepositoryInstance() {
-        MoviesRepositoryImpl.destroyInstance();
+        sut = null;
+        movieEntityList = null;
+        movieEntity = null;
+        movieList = null;
+        movie = null;
     }
 
     @Test
