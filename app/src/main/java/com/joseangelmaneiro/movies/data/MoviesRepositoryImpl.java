@@ -47,15 +47,8 @@ public class MoviesRepositoryImpl implements MoviesRepository {
 
     @Override
     public void getMovie(int movieId, final Handler<Movie> handler) {
-        localDataSource.get(movieId, new Handler<MovieEntity>() {
-            @Override
-            public void handle(MovieEntity movieEntity) {
-                handler.handle(entityDataMapper.transform(movieEntity));
-            }
-
-            @Override
-            public void error(Exception ignored) { }
-        });
+        MovieEntity movieEntity = localDataSource.get(movieId);
+        handler.handle(entityDataMapper.transform(movieEntity));
     }
 
 }

@@ -32,11 +32,11 @@ public class AppModule {
         return application;
     }
 
-    /*@Provides
+    @Provides
     @Singleton
-    SQLiteOpenHelper provideDB(Context context) {
+    SQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
         return new MoviesDatabaseHelper(context);
-    }*/
+    }
 
     @Provides
     @Singleton
@@ -50,8 +50,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    MoviesLocalDataSource provideLocalDataSource(MoviesDatabaseHelper moviesDatabaseHelper) {
-        return new MoviesLocalDataSourceImpl(moviesDatabaseHelper);
+    MoviesLocalDataSource provideLocalDataSource(SQLiteOpenHelper sqLiteOpenHelper) {
+        return new MoviesLocalDataSourceImpl(sqLiteOpenHelper);
     }
 
     @Provides
