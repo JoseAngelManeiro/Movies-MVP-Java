@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import com.joseangelmaneiro.movies.R;
-import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.platform.navigation.Navigator;
 import com.joseangelmaneiro.movies.presentation.presenters.MovieListPresenter;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
+import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class MovieListActivity extends BaseActivity implements MovieListView {
 
-    private MovieListPresenter presenter;
+    @Inject MovieListPresenter presenter;
 
     private MoviesAdapter adapter;
 
@@ -31,8 +31,6 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
 
         bindViews();
 
-        setUpPresenter();
-
         setUpActionBar();
 
         setUpListView();
@@ -45,12 +43,6 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
 
     private void bindViews(){
         ButterKnife.bind(this);
-    }
-
-    private void setUpPresenter(){
-        presenter = new MovieListPresenter(
-                Injection.provideUseCaseFactory(getApplicationContext()));
-        presenter.setView(this);
     }
 
     private void setUpActionBar(){

@@ -9,6 +9,8 @@ import com.joseangelmaneiro.movies.presentation.DetailMovieView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import java.lang.ref.WeakReference;
 
+import javax.inject.Inject;
+
 
 public class DetailMoviePresenter implements Handler<Movie>{
 
@@ -20,7 +22,7 @@ public class DetailMoviePresenter implements Handler<Movie>{
 
     private WeakReference<DetailMovieView> view;
 
-
+    @Inject
     public DetailMoviePresenter(UseCaseFactory useCaseFactory, Formatter formatter, int movieId){
         this.useCaseFactory = useCaseFactory;
         this.formatter = formatter;

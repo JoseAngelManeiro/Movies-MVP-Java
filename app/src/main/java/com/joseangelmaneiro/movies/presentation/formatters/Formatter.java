@@ -4,14 +4,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-
+@Singleton
 public class Formatter {
 
     private static final String SERVER_DATE_FORMAT = "yyyy-MM-dd";
     private static final String APP_DATE_FORMAT = "dd/MM/yyyy";
 
-
+    @Inject
     public Formatter(){}
 
     public String formatDate(String serverDate){

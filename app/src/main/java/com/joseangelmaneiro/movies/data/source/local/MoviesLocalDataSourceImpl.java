@@ -4,24 +4,16 @@ import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.source.local.db.MoviesDatabaseHelper;
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
 
-    private static MoviesLocalDataSourceImpl INSTANCE;
-
     private MoviesDatabaseHelper moviesDatabaseHelper;
 
-    // Prevent direct instantiation.
-    private MoviesLocalDataSourceImpl(MoviesDatabaseHelper moviesDatabaseHelper) {
+    @Inject
+    public MoviesLocalDataSourceImpl(MoviesDatabaseHelper moviesDatabaseHelper) {
         this.moviesDatabaseHelper = moviesDatabaseHelper;
-    }
-
-    public static MoviesLocalDataSourceImpl getInstance(MoviesDatabaseHelper moviesDatabaseHelper) {
-        if (INSTANCE == null) {
-            INSTANCE = new MoviesLocalDataSourceImpl(moviesDatabaseHelper);
-        }
-        return INSTANCE;
     }
 
     @Override

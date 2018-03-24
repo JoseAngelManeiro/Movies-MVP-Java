@@ -9,6 +9,8 @@ import com.joseangelmaneiro.movies.presentation.MovieListView;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public class MovieListPresenter implements Handler<List<Movie>>{
 
@@ -20,7 +22,7 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     private int selectedMovieId;
 
-
+    @Inject
     public MovieListPresenter(UseCaseFactory useCaseFactory){
         this.useCaseFactory = useCaseFactory;
     }

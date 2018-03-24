@@ -8,19 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class MoviesDatabaseHelper extends SQLiteOpenHelper {
-
-    private static MoviesDatabaseHelper INSTANCE;
-
-    //Singleton pattern
-    public static synchronized MoviesDatabaseHelper getInstance(Context context){
-        if(INSTANCE == null){
-            INSTANCE = new MoviesDatabaseHelper(context.getApplicationContext());
-        }
-        return INSTANCE;
-    }
 
     // Database Info
     private static final String DATABASE_NAME = "moviesDB";
@@ -46,8 +37,8 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_RELEASEDATE = "releasedate";
 
 
-    //Private to prevent direct instantiation
-    private MoviesDatabaseHelper(Context context) {
+    @Inject
+    public MoviesDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
