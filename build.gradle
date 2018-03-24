@@ -31,6 +31,7 @@ ext {
     espressoVersion = '3.0.1'
     testSupportVersion = '1.0.1'
     butterKnifeVersion = '8.8.1'
+    daggerVersion = '2.11'
 }
 
 task clean(type: Delete) {
