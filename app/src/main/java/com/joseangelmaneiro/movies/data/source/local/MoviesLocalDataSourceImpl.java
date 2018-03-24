@@ -2,7 +2,6 @@ package com.joseangelmaneiro.movies.data.source.local;
 
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
-
 import java.util.List;
 import javax.inject.Inject;
 

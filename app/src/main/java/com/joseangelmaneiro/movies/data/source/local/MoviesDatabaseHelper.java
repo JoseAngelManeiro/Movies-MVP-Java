@@ -1,11 +1,9 @@
 package com.joseangelmaneiro.movies.data.source.local;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.TextUtils;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +17,6 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
     // Database Info
     private static final String DATABASE_NAME = "moviesDB";
     private static final int DATABASE_VERSION = 1;
-
-    private static final String SEPARATOR = ",";
 
     @Inject
     public MoviesDatabaseHelper(Context context) {
@@ -73,41 +69,20 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         // This helps with performance and ensures consistency of the database.
         db.beginTransaction();
         for(MovieEntity movieEntity : movieEntityList){
-            db.insert(TABLE_NAME, null, createContentValues(movieEntity));
+            db.insert(TABLE_NAME, null, movieEntity.getContentValues());
         }
         db.setTransactionSuccessful();
         db.endTransaction();
     }
 
-    private ContentValues createContentValues(MovieEntity movieEntity){
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, movieEntity.id);
-        values.put(COLUMN_VOTE_COUNT, movieEntity.voteCount);
-        values.put(COLUMN_VIDEO, movieEntity.video ? 1 : 0);
-        values.put(COLUMN_VOTE_AVERAGE, movieEntity.voteAverage);
-        values.put(COLUMN_TITLE, movieEntity.title);
-        values.put(COLUMN_POPULARITY, movieEntity.popularity);
-        values.put(COLUMN_POSTERPATH, movieEntity.posterPath);
-        values.put(COLUMN_ORIGINAL_LANGUAGE, movieEntity.originalLanguage);
-        values.put(COLUMN_ORIGINAL_TITLE, movieEntity.originalTitle);
-        values.put(COLUMN_GENRE_IDS, transformIntegerListToString(movieEntity.genreIds));
-        values.put(COLUMN_BACKDROPPATH, movieEntity.backdropPath);
-        values.put(COLUMN_ADULT, movieEntity.adult ? 1 : 0);
-        values.put(COLUMN_OVERVIEW, movieEntity.overview);
-        values.put(COLUMN_RELEASEDATE, movieEntity.releaseDate);
-        return values;
-    }
-
     public MovieEntity get(int id){
         SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
-        MovieEntity movieEntity = new MovieEntity();
+        MovieEntity movieEntity = null;
 
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
-            do {
-                movieEntity = createMovieEntity(cursor);
-            } while(cursor.moveToNext());
+            movieEntity = new MovieEntity(cursor);
         }
 
         if (!cursor.isClosed()) {
@@ -115,26 +90,6 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
 
         return movieEntity;
-    }
-
-    private MovieEntity createMovieEntity(Cursor cursor){
-        MovieEntity movie = new MovieEntity();
-        movie.id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-        movie.voteCount = cursor.getInt(cursor.getColumnIndex(COLUMN_VOTE_COUNT));
-        movie.video = cursor.getInt(cursor.getColumnIndex(COLUMN_VIDEO)) == 1;
-        movie.voteAverage = cursor.getString(cursor.getColumnIndex(COLUMN_VOTE_AVERAGE));
-        movie.title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
-        movie.popularity = cursor.getFloat(cursor.getColumnIndex(COLUMN_POPULARITY));
-        movie.posterPath = cursor.getString(cursor.getColumnIndex(COLUMN_POSTERPATH));
-        movie.originalLanguage = cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_LANGUAGE));
-        movie.originalTitle = cursor.getString(cursor.getColumnIndex(COLUMN_ORIGINAL_TITLE));
-        movie.genreIds = transformStringToIntegerList(
-                cursor.getString(cursor.getColumnIndex(COLUMN_GENRE_IDS)));
-        movie.backdropPath = cursor.getString(cursor.getColumnIndex(COLUMN_BACKDROPPATH));
-        movie.adult = cursor.getInt(cursor.getColumnIndex(COLUMN_ADULT)) == 1;
-        movie.overview = cursor.getString(cursor.getColumnIndex(COLUMN_OVERVIEW));
-        movie.releaseDate = cursor.getString(cursor.getColumnIndex(COLUMN_RELEASEDATE));
-        return movie;
     }
 
     public List<MovieEntity> getAll() {
@@ -145,7 +100,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             do {
-                movieEntityList.add(createMovieEntity(cursor));
+                movieEntityList.add(new MovieEntity(cursor));
             } while(cursor.moveToNext());
         }
 
@@ -154,19 +109,6 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
 
         return movieEntityList;
-    }
-
-    private String transformIntegerListToString(List<Integer> integerList){
-        return TextUtils.join(SEPARATOR, integerList);
-    }
-
-    private List<Integer> transformStringToIntegerList(String text){
-        String[] arrayDB = text.split(SEPARATOR);
-        List<Integer> integerList = new ArrayList<>();
-        for(String s : arrayDB){
-            integerList.add(Integer.parseInt(s));
-        }
-        return integerList;
     }
 
 }
