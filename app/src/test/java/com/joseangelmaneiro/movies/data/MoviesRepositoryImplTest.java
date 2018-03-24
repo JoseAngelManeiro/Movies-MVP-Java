@@ -38,8 +38,6 @@ public class MoviesRepositoryImplTest {
     private Handler<Movie> movieHandler;
     @Captor
     private ArgumentCaptor<Handler<List<MovieEntity>>> moviesHandlerCaptor;
-    @Captor
-    private ArgumentCaptor<Handler<MovieEntity>> movieHandlerCaptor;
 
     private List<MovieEntity> movieEntityList;
     private MovieEntity movieEntity;
@@ -110,8 +108,8 @@ public class MoviesRepositoryImplTest {
     }
 
     private void givenAValidElementFromLocal(){
+        when(localDataSource.get(eq(MOVIE_ID))).thenReturn(movieEntity);
         sut.getMovie(MOVIE_ID, movieHandler);
-        setMovieAvailable(movieEntity);
     }
 
     private void setMoviesError(Exception exception) {
@@ -120,14 +118,9 @@ public class MoviesRepositoryImplTest {
         argumentCaptor.getValue().error(exception);
     }
 
-    private void setMoviesAvailable(List<MovieEntity> movieList) {
+    private void setMoviesAvailable(List<MovieEntity> movieEntityList) {
         verify(remoteDataSource).getAll(moviesHandlerCaptor.capture());
-        moviesHandlerCaptor.getValue().handle(movieList);
-    }
-
-    private void setMovieAvailable(MovieEntity movie) {
-        verify(localDataSource).get(eq(MOVIE_ID), movieHandlerCaptor.capture());
-        movieHandlerCaptor.getValue().handle(movie);
+        moviesHandlerCaptor.getValue().handle(movieEntityList);
     }
 
 }
