@@ -8,11 +8,10 @@ import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class MoviesRepositoryImpl implements MoviesRepository {
-
-    private static MoviesRepositoryImpl INSTANCE;
 
     private MoviesLocalDataSource localDataSource;
 
@@ -21,26 +20,13 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     private EntityDataMapper entityDataMapper;
 
 
-    // Prevent direct instantiation.
-    private MoviesRepositoryImpl(MoviesLocalDataSource localDataSource,
+    @Inject
+    public MoviesRepositoryImpl(MoviesLocalDataSource localDataSource,
                                  MoviesRemoteDataSource remoteDataSource,
                                  EntityDataMapper entityDataMapper) {
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
         this.entityDataMapper = entityDataMapper;
-    }
-
-    public static MoviesRepositoryImpl getInstance(MoviesLocalDataSource localDataSource,
-                                                   MoviesRemoteDataSource remoteDataSource,
-                                                   EntityDataMapper entityDataMapper) {
-        if (INSTANCE == null) {
-            INSTANCE = new MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper);
-        }
-        return INSTANCE;
-    }
-
-    public static void destroyInstance() {
-        INSTANCE = null;
     }
 
     @Override

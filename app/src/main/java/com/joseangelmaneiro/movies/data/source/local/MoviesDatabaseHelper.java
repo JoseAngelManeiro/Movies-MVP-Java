@@ -1,16 +1,18 @@
-package com.joseangelmaneiro.movies.data.source.local.db;
+package com.joseangelmaneiro.movies.data.source.local;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
-
+@Singleton
 public class MoviesDatabaseHelper extends SQLiteOpenHelper {
 
     // Database Info
@@ -36,6 +38,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_OVERVIEW = "overview";
     private static final String KEY_RELEASEDATE = "releasedate";
 
+    private static final String SEPARATOR = ",";
 
     @Inject
     public MoviesDatabaseHelper(Context context) {
@@ -105,7 +108,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_POSTERPATH, movieEntity.posterPath);
         values.put(KEY_ORIGINAL_LANGUAGE, movieEntity.originalLanguage);
         values.put(KEY_ORIGINAL_TITLE, movieEntity.originalTitle);
-        values.put(KEY_GENRE_IDS, DBUtils.transformIntegerListToString(movieEntity.genreIds));
+        values.put(KEY_GENRE_IDS, transformIntegerListToString(movieEntity.genreIds));
         values.put(KEY_BACKDROPPATH, movieEntity.backdropPath);
         values.put(KEY_ADULT, movieEntity.adult ? 1 : 0);
         values.put(KEY_OVERVIEW, movieEntity.overview);
@@ -143,7 +146,7 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         movie.posterPath = cursor.getString(cursor.getColumnIndex(KEY_POSTERPATH));
         movie.originalLanguage = cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_LANGUAGE));
         movie.originalTitle = cursor.getString(cursor.getColumnIndex(KEY_ORIGINAL_TITLE));
-        movie.genreIds = DBUtils.transformStringToIntegerList(
+        movie.genreIds = transformStringToIntegerList(
                 cursor.getString(cursor.getColumnIndex(KEY_GENRE_IDS)));
         movie.backdropPath = cursor.getString(cursor.getColumnIndex(KEY_BACKDROPPATH));
         movie.adult = cursor.getInt(cursor.getColumnIndex(KEY_ADULT)) == 1;
@@ -169,6 +172,19 @@ public class MoviesDatabaseHelper extends SQLiteOpenHelper {
         }
 
         return movieEntityList;
+    }
+
+    private String transformIntegerListToString(List<Integer> integerList){
+        return TextUtils.join(SEPARATOR, integerList);
+    }
+
+    private List<Integer> transformStringToIntegerList(String text){
+        String[] arrayDB = text.split(SEPARATOR);
+        List<Integer> integerList = new ArrayList<>();
+        for(String s : arrayDB){
+            integerList.add(Integer.parseInt(s));
+        }
+        return integerList;
     }
 
 }

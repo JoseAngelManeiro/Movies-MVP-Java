@@ -8,7 +8,6 @@ import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.DetailMovieView;
 import com.joseangelmaneiro.movies.presentation.formatters.Formatter;
 import java.lang.ref.WeakReference;
-
 import javax.inject.Inject;
 
 

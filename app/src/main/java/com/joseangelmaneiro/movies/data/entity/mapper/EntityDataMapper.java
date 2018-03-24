@@ -4,13 +4,17 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.domain.Movie;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 
 // Mapper class used to transform MovieEntity, in the data layer, to Movie, in the domain layer.
+@Singleton
 public class EntityDataMapper {
 
     public static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w500";
 
+    @Inject
     public EntityDataMapper(){}
 
     public List<Movie> transform(List<MovieEntity> movieEntityList){

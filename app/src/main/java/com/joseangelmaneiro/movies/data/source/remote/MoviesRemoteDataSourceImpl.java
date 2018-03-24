@@ -5,7 +5,7 @@ import com.joseangelmaneiro.movies.data.exception.ServiceException;
 import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.entity.PageEntity;
-import com.joseangelmaneiro.movies.data.source.remote.net.MovieService;
+
 import java.util.List;
 import javax.inject.Inject;
 import retrofit2.Call;
