@@ -12,8 +12,6 @@ import com.joseangelmaneiro.movies.data.source.remote.MovieService;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSourceImpl;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
-import com.joseangelmaneiro.movies.platform.di.detail.DetailActivityComponent;
-import com.joseangelmaneiro.movies.platform.di.list.ListActivityComponent;
 import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
@@ -21,9 +19,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-@Module(subcomponents = {
-        ListActivityComponent.class,
-        DetailActivityComponent.class})
+@Module
 public class AppModule {
 
     @Provides
