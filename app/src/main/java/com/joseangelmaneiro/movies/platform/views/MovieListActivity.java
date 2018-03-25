@@ -11,7 +11,6 @@ import com.joseangelmaneiro.movies.presentation.MovieListView;
 import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
 
 
 public class MovieListActivity extends BaseActivity implements MovieListView {
@@ -27,7 +26,6 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 

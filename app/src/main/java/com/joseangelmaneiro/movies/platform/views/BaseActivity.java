@@ -1,15 +1,13 @@
 package com.joseangelmaneiro.movies.platform.views;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.presentation.BaseView;
+import dagger.android.support.DaggerAppCompatActivity;
 
 
-@SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity extends DaggerAppCompatActivity implements BaseView {
 
     @Override
     public void showErrorMessage(String message) {

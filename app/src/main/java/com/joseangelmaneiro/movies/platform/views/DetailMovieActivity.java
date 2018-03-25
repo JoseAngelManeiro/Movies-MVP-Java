@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
 
 
 public class DetailMovieActivity extends BaseActivity implements DetailMovieView {
@@ -37,7 +36,6 @@ public class DetailMovieActivity extends BaseActivity implements DetailMovieView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
 

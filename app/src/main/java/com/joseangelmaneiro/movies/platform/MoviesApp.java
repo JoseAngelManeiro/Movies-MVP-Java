@@ -1,31 +1,18 @@
 package com.joseangelmaneiro.movies.platform;
 
-import android.app.Activity;
-import android.app.Application;
+import com.joseangelmaneiro.movies.platform.di.app.AppComponent;
 import com.joseangelmaneiro.movies.platform.di.app.DaggerAppComponent;
-import javax.inject.Inject;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 
 
-public class MoviesApp extends Application implements HasActivityInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+public class MoviesApp extends DaggerApplication {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        DaggerAppComponent
-                .builder()
-                .application(this)
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    public DispatchingAndroidInjector<Activity> activityInjector() {
-        return activityDispatchingAndroidInjector;
+    protected AndroidInjector<MoviesApp> applicationInjector() {
+        AppComponent appComponent = DaggerAppComponent.builder().application(this).build();
+        appComponent.inject(this);
+        return appComponent;
     }
 
 }
