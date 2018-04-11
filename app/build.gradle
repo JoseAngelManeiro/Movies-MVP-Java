@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -65,5 +69,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     compile "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
 
 }
