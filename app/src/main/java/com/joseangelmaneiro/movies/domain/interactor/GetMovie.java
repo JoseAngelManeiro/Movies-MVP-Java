@@ -1,29 +1,35 @@
 package com.joseangelmaneiro.movies.domain.interactor;
 
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler;
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler;
+import io.reactivex.Single;
 
 
-public class GetMovie implements UseCase<Movie, GetMovie.Params> {
+public class GetMovie extends UseCase<Movie, GetMovie.Params> {
 
     private MoviesRepository repository;
 
 
-    public GetMovie(MoviesRepository repository){
+    GetMovie(MoviesRepository repository,
+             UIScheduler uiScheduler,
+             JobScheduler jobScheduler){
+        super(uiScheduler, jobScheduler);
         this.repository = repository;
     }
 
     @Override
-    public void execute(final Handler<Movie> handler, Params params) {
-        repository.getMovie(params.getMovieId(), new Handler<Movie>() {
-            @Override
-            public void handle(Movie movie) {
-                handler.handle(movie);
+    Single<Movie> buildUseCaseObservable(Params params) {
+        return Single.create(emitter -> {
+            try {
+                Movie movie = repository.getMovie(params.getMovieId());
+                emitter.onSuccess(movie);
+            } catch (Exception exception){
+                if (!emitter.isDisposed()) {
+                    emitter.onError(exception);
+                }
             }
-
-            @Override
-            public void error(Exception ignored) {}
         });
     }
 
