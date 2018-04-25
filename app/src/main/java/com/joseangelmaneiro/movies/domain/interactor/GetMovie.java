@@ -21,16 +21,7 @@ public class GetMovie extends UseCase<Movie, GetMovie.Params> {
 
     @Override
     Single<Movie> buildUseCaseObservable(Params params) {
-        return Single.create(emitter -> {
-            try {
-                Movie movie = repository.getMovie(params.getMovieId());
-                emitter.onSuccess(movie);
-            } catch (Exception exception){
-                if (!emitter.isDisposed()) {
-                    emitter.onError(exception);
-                }
-            }
-        });
+        return Single.just(repository.getMovie(params.getMovieId()));
     }
 
     public static final class Params{
