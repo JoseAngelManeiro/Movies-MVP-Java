@@ -1,18 +1,18 @@
 package com.joseangelmaneiro.movies.presentation.presenters;
 
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
+import com.joseangelmaneiro.movies.domain.Observer;
+import com.joseangelmaneiro.movies.domain.interactor.GetMovies;
 import com.joseangelmaneiro.movies.domain.interactor.UseCase;
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
 import com.joseangelmaneiro.movies.presentation.MovieListView;
 import java.lang.ref.WeakReference;
 import java.util.List;
-
 import javax.inject.Inject;
 
 
-public class MovieListPresenter implements Handler<List<Movie>>{
+public class MovieListPresenter {
 
     private UseCaseFactory useCaseFactory;
 
@@ -32,30 +32,39 @@ public class MovieListPresenter implements Handler<List<Movie>>{
     }
 
     public void viewReady(){
-        invokeUseCase();
+        invokeUseCase(false);
     }
 
     public void refresh(){
-        invokeUseCase();
+        invokeUseCase(true);
     }
 
-    @Override
-    public void handle(List<Movie> movieList) {
-        saveMovies(movieList);
-        MovieListView movieListView = view.get();
-        if(movieListView!=null){
-            movieListView.cancelRefreshDialog();
-            movieListView.refreshList();
-        }
+    private void invokeUseCase(boolean refresh){
+        UseCase useCase = useCaseFactory.getMovies();
+        useCase.execute(new MoviesObserver(), new GetMovies.Params(refresh));
     }
 
-    @Override
-    public void error(Exception exception) {
-        MovieListView movieListView = view.get();
-        if(movieListView!=null){
-            movieListView.cancelRefreshDialog();
-            movieListView.showErrorMessage(exception.getMessage());
+    private final class MoviesObserver extends Observer<List<Movie>>{
+
+        @Override
+        public void onSuccess(List<Movie> movies) {
+            saveMovies(movieList);
+            MovieListView movieListView = view.get();
+            if(movieListView!=null){
+                movieListView.cancelRefreshDialog();
+                movieListView.refreshList();
+            }
         }
+
+        @Override
+        public void onError(Throwable exception) {
+            MovieListView movieListView = view.get();
+            if(movieListView!=null){
+                movieListView.cancelRefreshDialog();
+                movieListView.showErrorMessage(exception.getMessage());
+            }
+        }
+
     }
 
     public int getItemsCount(){
@@ -78,11 +87,6 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         if(movieListView!=null){
             movieListView.navigateToDetailScreen(getSelectedMovieId());
         }
-    }
-
-    private void invokeUseCase(){
-        UseCase useCase = useCaseFactory.getMovies();
-        useCase.execute(this, null);
     }
 
     public void saveMovies(List<Movie> movieList){
