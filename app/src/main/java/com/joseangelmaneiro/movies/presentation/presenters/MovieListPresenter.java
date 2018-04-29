@@ -47,7 +47,7 @@ public class MovieListPresenter {
     private final class MoviesObserver extends Observer<List<Movie>>{
 
         @Override
-        public void onSuccess(List<Movie> movies) {
+        public void onSuccess(List<Movie> movieList) {
             saveMovies(movieList);
             MovieListView movieListView = view.get();
             if(movieListView!=null){
