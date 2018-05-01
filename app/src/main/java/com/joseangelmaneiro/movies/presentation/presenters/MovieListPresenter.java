@@ -89,23 +89,23 @@ public class MovieListPresenter {
         }
     }
 
-    public void saveMovies(List<Movie> movieList){
+    void saveMovies(List<Movie> movieList){
         this.movieList = movieList;
     }
 
-    public Movie getMovie(int position){
+    private Movie getMovie(int position){
         return movieList.get(position);
     }
 
-    public void saveSelectedMovieId(int selectedMovieId){
+    private void saveSelectedMovieId(int selectedMovieId){
         this.selectedMovieId = selectedMovieId;
     }
 
-    public boolean moviesListIsEmpty(){
+    boolean moviesListIsEmpty(){
         return movieList==null || movieList.isEmpty();
     }
 
-    public int getSelectedMovieId(){
+    int getSelectedMovieId(){
         return selectedMovieId;
     }
 
