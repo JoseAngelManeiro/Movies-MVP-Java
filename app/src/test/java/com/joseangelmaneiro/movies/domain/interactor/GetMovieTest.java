@@ -1,68 +1,58 @@
 package com.joseangelmaneiro.movies.domain.interactor;
 
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler;
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler;
 import com.joseangelmaneiro.movies.utils.TestUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.ArgumentMatchers.any;
+import io.reactivex.observers.TestObserver;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class GetMovieTest {
 
+    private static final int MOVIEID = 1234;
+
     @Mock
     MoviesRepository repository;
     @Mock
-    Handler<Movie> handler;
-    @Captor
-    ArgumentCaptor<Handler<Movie>> movieCaptor;
+    UIScheduler uiScheduler;
+    @Mock
+    JobScheduler jobScheduler;
+
+    TestObserver<Movie> testObserver;
 
     GetMovie sut;
-
-    int fakeMovieId = 1234;
 
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        sut = new GetMovie(repository);
-    }
+        sut = new GetMovie(repository, uiScheduler, jobScheduler);
 
-    @After
-    public void tearDown() throws Exception {
-        sut = null;
+        testObserver = new TestObserver<>();
     }
 
     @Test
-    public void execute_InvokesRepository(){
-        sut.execute(null, new GetMovie.Params(fakeMovieId));
+    public void useCaseInvokesTheRepositoryAndReturnsAMovie() throws Exception {
+        Movie movie = givenAMovieFromRepository();
 
-        verify(repository).getMovie(eq(fakeMovieId), any(Handler.class));
+        sut.buildUseCaseObservable(new GetMovie.Params(MOVIEID)).subscribe(testObserver);
+
+        testObserver.assertValue(movie);
     }
 
-    @Test
-    public void execute_ReturnsMovie(){
+
+    private Movie givenAMovieFromRepository() throws Exception {
         Movie movie = TestUtils.createMainMovie();
-
-        sut.execute(handler, new GetMovie.Params(fakeMovieId));
-        setMovieAvailable(movie);
-
-        verify(handler).handle(eq(movie));
-    }
-
-
-    private void setMovieAvailable(Movie movie){
-        verify(repository).getMovie(eq(fakeMovieId), movieCaptor.capture());
-        movieCaptor.getValue().handle(movie);
+        when(repository.getMovie(eq(MOVIEID))).thenReturn(movie);
+        return movie;
     }
 
 }

@@ -1,6 +1,9 @@
 package com.joseangelmaneiro.movies.domain.interactor;
 
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
+import com.joseangelmaneiro.movies.domain.executor.JobScheduler;
+import com.joseangelmaneiro.movies.domain.executor.UIScheduler;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +16,10 @@ public class UseCaseFactoryTest {
 
     @Mock
     MoviesRepository repository;
+    @Mock
+    UIScheduler uiScheduler;
+    @Mock
+    JobScheduler jobScheduler;
 
     UseCaseFactory sut;
 
@@ -21,7 +28,7 @@ public class UseCaseFactoryTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        sut = new UseCaseFactory(repository);
+        sut = new UseCaseFactory(repository, uiScheduler, jobScheduler);
     }
 
     @After
