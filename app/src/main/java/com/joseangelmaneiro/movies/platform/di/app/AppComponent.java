@@ -21,6 +21,9 @@ public interface AppComponent extends AndroidInjector<MoviesApp> {
 
     @Component.Builder
     interface Builder {
+        /* This method is necessary for DaggerMock when running instrumentations tests */
+        Builder appModule(AppModule appModule);
+
         @BindsInstance
         Builder application(Application application);
         AppComponent build();

@@ -28,19 +28,19 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context provideContext(Application application) {
+    public Context provideContext(Application application) {
         return application;
     }
 
     @Provides
     @Singleton
-    SQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
+    public SQLiteOpenHelper provideSQLiteOpenHelper(Context context) {
         return new MoviesDatabaseHelper(context);
     }
 
     @Provides
     @Singleton
-    MovieService provideService() {
+    public MovieService provideService() {
         return new Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -50,19 +50,19 @@ public class AppModule {
 
     @Provides
     @Singleton
-    MoviesLocalDataSource provideLocalDataSource(SQLiteOpenHelper sqLiteOpenHelper) {
+    public MoviesLocalDataSource provideLocalDataSource(SQLiteOpenHelper sqLiteOpenHelper) {
         return new MoviesLocalDataSourceImpl(sqLiteOpenHelper);
     }
 
     @Provides
     @Singleton
-    MoviesRemoteDataSource provideRemoteDataSource(MovieService movieService) {
+    public MoviesRemoteDataSource provideRemoteDataSource(MovieService movieService) {
         return new MoviesRemoteDataSourceImpl(movieService);
     }
 
     @Provides
     @Singleton
-    MoviesRepository provideRepository(MoviesLocalDataSource localDataSource,
+    public MoviesRepository provideRepository(MoviesLocalDataSource localDataSource,
                                        MoviesRemoteDataSource remoteDataSource,
                                        EntityDataMapper entityDataMapper) {
         return new MoviesRepositoryImpl(localDataSource, remoteDataSource, entityDataMapper);
@@ -70,13 +70,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    JobScheduler provideJobScheduler(JobThread jobThread){
+    public JobScheduler provideJobScheduler(JobThread jobThread){
         return jobThread;
     }
 
     @Provides
     @Singleton
-    UIScheduler provideUIScheduler(UIThread uiThread){
+    public UIScheduler provideUIScheduler(UIThread uiThread){
         return uiThread;
     }
 
