@@ -16,9 +16,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url "https://maven.google.com"
-        }
+        maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
         google()
     }
 }
@@ -36,6 +35,7 @@ ext {
     daggerVersion = '2.11'
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
+    daggerMockVersion = '0.8.4'
 }
 
 task clean(type: Delete) {
