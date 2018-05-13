@@ -1,20 +1,9 @@
 package com.joseangelmaneiro.movies.utils;
 
-
 import java.util.List;
 
 
 public interface TestData {
-
-    int MAIN_NUM_PAGE = 1;
-    int MAIN_TOTAL_PAGES = 2;
-    int MAIN_TOTAL_RESULTS = 40;
-    int MAIN_NUM_MOVIES = 20;
-
-    int ALT_NUM_PAGE = 2;
-    int ALT_TOTAL_PAGES = 2;
-    int ALT_TOTAL_RESULTS = 40;
-    int ALT_NUM_MOVIES = 20;
 
     int MAIN_MOVIE_ID = 1;
     int VOTE_COUNT = 5;
@@ -33,8 +22,6 @@ public interface TestData {
 
     int ALT_MOVIE_ID = 2;
     String ALT_MOVIE_TITLE = "Movie Two";
-    String ALT_ORIGINAL_LANGUAGE = "EN";
-    String ALT_ORIGINAL_TITLE = "alt_title";
     String ALT_RELEASE_DATE = "06/12/2017";
     String ALT_VOTE_AVERAGE = "4.3";
 

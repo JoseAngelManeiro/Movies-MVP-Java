@@ -1,68 +1,54 @@
 package com.joseangelmaneiro.movies.data;
 
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
+import com.joseangelmaneiro.movies.domain.Handler;
+import com.joseangelmaneiro.movies.domain.Movie;
+import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import java.util.List;
+import javax.inject.Inject;
 
 
 public class MoviesRepositoryImpl implements MoviesRepository {
-
-    private static MoviesRepositoryImpl INSTANCE;
 
     private MoviesLocalDataSource localDataSource;
 
     private MoviesRemoteDataSource remoteDataSource;
 
+    private EntityDataMapper entityDataMapper;
 
-    // Prevent direct instantiation.
-    private MoviesRepositoryImpl(MoviesLocalDataSource localDataSource,
-                                 MoviesRemoteDataSource remoteDataSource) {
+
+    @Inject
+    public MoviesRepositoryImpl(MoviesLocalDataSource localDataSource,
+                                 MoviesRemoteDataSource remoteDataSource,
+                                 EntityDataMapper entityDataMapper) {
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
-    }
-
-    public static MoviesRepositoryImpl getInstance(MoviesLocalDataSource localDataSource,
-                                                   MoviesRemoteDataSource remoteDataSource) {
-        if (INSTANCE == null) {
-            INSTANCE = new MoviesRepositoryImpl(localDataSource, remoteDataSource);
-        }
-        return INSTANCE;
-    }
-
-    public static void destroyInstance() {
-        INSTANCE = null;
+        this.entityDataMapper = entityDataMapper;
     }
 
     @Override
     public void getMovies(final Handler<List<Movie>> handler) {
-        remoteDataSource.getMovies(new Handler<List<Movie>>() {
+        remoteDataSource.getAll(new Handler<List<MovieEntity>>() {
             @Override
-            public void handle(List<Movie> movieList) {
-                localDataSource.deleteAllMovies();
-                localDataSource.saveMovies(movieList);
-                handler.handle(movieList);
+            public void handle(List<MovieEntity> movieEntityList) {
+                localDataSource.deleteAll();
+                localDataSource.save(movieEntityList);
+                handler.handle(entityDataMapper.transform(movieEntityList));
             }
-
             @Override
-            public void error() {
-                handler.error();
+            public void error(Exception exception) {
+                handler.error(exception);
             }
         });
     }
 
     @Override
     public void getMovie(int movieId, final Handler<Movie> handler) {
-        localDataSource.getMovie(movieId, new Handler<Movie>() {
-            @Override
-            public void handle(Movie movie) {
-                handler.handle(movie);
-            }
-
-            @Override
-            public void error() {
-                handler.error();
-            }
-        });
+        MovieEntity movieEntity = localDataSource.get(movieId);
+        handler.handle(entityDataMapper.transform(movieEntity));
     }
 
 }

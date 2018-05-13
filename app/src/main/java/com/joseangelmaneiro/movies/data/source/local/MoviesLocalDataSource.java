@@ -1,18 +1,17 @@
 package com.joseangelmaneiro.movies.data.source.local;
 
-import com.joseangelmaneiro.movies.data.Handler;
-import com.joseangelmaneiro.movies.data.Movie;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import java.util.List;
 
 
 public interface MoviesLocalDataSource {
 
-    void getMovies(Handler<List<Movie>> handler);
+    List<MovieEntity> getAll();
 
-    void getMovie(int movieId, Handler<Movie> handler);
+    MovieEntity get(int id);
 
-    void saveMovies(List<Movie> movieList);
+    void save(List<MovieEntity> movieEntityList);
 
-    void deleteAllMovies();
+    void deleteAll();
 
 }

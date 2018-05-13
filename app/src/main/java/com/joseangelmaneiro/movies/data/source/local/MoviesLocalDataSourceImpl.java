@@ -1,57 +1,80 @@
 package com.joseangelmaneiro.movies.data.source.local;
 
-import com.joseangelmaneiro.movies.data.Handler;
-import com.joseangelmaneiro.movies.data.Movie;
-import com.joseangelmaneiro.movies.data.source.local.db.MoviesDatabaseHelper;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import com.joseangelmaneiro.movies.data.entity.MovieEntity;
+import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+import static com.joseangelmaneiro.movies.data.source.local.Contract.Movie.*;
 
 
 public class MoviesLocalDataSourceImpl implements MoviesLocalDataSource {
 
-    private static MoviesLocalDataSourceImpl INSTANCE;
+    private SQLiteOpenHelper sqLiteOpenHelper;
 
-    private MoviesDatabaseHelper moviesDatabaseHelper;
-
-    // Prevent direct instantiation.
-    private MoviesLocalDataSourceImpl(MoviesDatabaseHelper moviesDatabaseHelper) {
-        this.moviesDatabaseHelper = moviesDatabaseHelper;
+    @Inject
+    public MoviesLocalDataSourceImpl(SQLiteOpenHelper sqLiteOpenHelper) {
+        this.sqLiteOpenHelper = sqLiteOpenHelper;
     }
 
-    public static MoviesLocalDataSourceImpl getInstance(MoviesDatabaseHelper moviesDatabaseHelper) {
-        if (INSTANCE == null) {
-            INSTANCE = new MoviesLocalDataSourceImpl(moviesDatabaseHelper);
+    @Override
+    public List<MovieEntity> getAll() {
+        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME;
+        List<MovieEntity> movieEntityList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                movieEntityList.add(new MovieEntity(cursor));
+            } while(cursor.moveToNext());
         }
-        return INSTANCE;
-    }
 
-    @Override
-    public void getMovies(Handler<List<Movie>> handler) {
-        List<Movie> movieList = moviesDatabaseHelper.getAllMovies();
-        if(movieList!=null && !movieList.isEmpty()){
-            handler.handle(movieList);
-        } else{
-            handler.error();
+        if (!cursor.isClosed()) {
+            cursor.close();
         }
+
+        return movieEntityList;
     }
 
     @Override
-    public void getMovie(int movieId, Handler<Movie> handler) {
-        Movie movie = moviesDatabaseHelper.getMovie(movieId);
-        if(movie!=null){
-            handler.handle(movie);
-        } else{
-            handler.error();
+    public MovieEntity get(int id) {
+        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
+        MovieEntity movieEntity = null;
+
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            movieEntity = new MovieEntity(cursor);
         }
+
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return movieEntity;
     }
 
     @Override
-    public void saveMovies(List<Movie> movieList) {
-        moviesDatabaseHelper.addMovies(movieList);
+    public void save(List<MovieEntity> movieEntityList) {
+        SQLiteDatabase db = sqLiteOpenHelper.getWritableDatabase();
+
+        // It's a good idea to wrap our insert in a transaction.
+        // This helps with performance and ensures consistency of the database.
+        db.beginTransaction();
+        for(MovieEntity movieEntity : movieEntityList){
+            db.insert(TABLE_NAME, null, movieEntity.getContentValues());
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     @Override
-    public void deleteAllMovies() {
-        moviesDatabaseHelper.deleteAllMovies();
+    public void deleteAll() {
+        SQLiteDatabase db = sqLiteOpenHelper.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
     }
 
 }
