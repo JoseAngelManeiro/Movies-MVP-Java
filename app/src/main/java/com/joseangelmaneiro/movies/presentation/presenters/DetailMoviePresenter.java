@@ -1,7 +1,7 @@
 package com.joseangelmaneiro.movies.presentation.presenters;
 
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
+import com.joseangelmaneiro.movies.domain.Observer;
 import com.joseangelmaneiro.movies.domain.interactor.GetMovie;
 import com.joseangelmaneiro.movies.domain.interactor.UseCase;
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
 
-public class DetailMoviePresenter implements Handler<Movie>{
+public class DetailMoviePresenter {
 
     private UseCaseFactory useCaseFactory;
 
@@ -22,7 +22,9 @@ public class DetailMoviePresenter implements Handler<Movie>{
     private WeakReference<DetailMovieView> view;
 
     @Inject
-    public DetailMoviePresenter(UseCaseFactory useCaseFactory, Formatter formatter, int movieId){
+    public DetailMoviePresenter(UseCaseFactory useCaseFactory,
+                                Formatter formatter,
+                                int movieId){
         this.useCaseFactory = useCaseFactory;
         this.formatter = formatter;
         this.movieId = movieId;
@@ -34,23 +36,27 @@ public class DetailMoviePresenter implements Handler<Movie>{
 
     public void viewReady(){
         UseCase useCase = useCaseFactory.getMovie();
-        useCase.execute(this, new GetMovie.Params(movieId));
+        useCase.execute(new MovieObserver(), new GetMovie.Params(movieId));
     }
 
-    @Override
-    public void handle(Movie movie) {
-        DetailMovieView detailMovieView = view.get();
-        if(detailMovieView!=null){
-            detailMovieView.displayImage(movie.getBackdropPath());
-            detailMovieView.displayTitle(movie.getTitle());
-            detailMovieView.displayVoteAverage(movie.getVoteAverage());
-            detailMovieView.displayReleaseDate(formatter.formatDate(movie.getReleaseDate()));
-            detailMovieView.displayOverview(movie.getOverview());
+    private final class MovieObserver extends Observer<Movie> {
+
+        @Override
+        public void onSuccess(Movie movie) {
+            DetailMovieView detailMovieView = view.get();
+            if(detailMovieView!=null){
+                detailMovieView.displayImage(movie.getBackdropPath());
+                detailMovieView.displayTitle(movie.getTitle());
+                detailMovieView.displayVoteAverage(movie.getVoteAverage());
+                detailMovieView.displayReleaseDate(formatter.formatDate(movie.getReleaseDate()));
+                detailMovieView.displayOverview(movie.getOverview());
+            }
         }
-    }
 
-    @Override
-    public void error(Exception ignored) { }
+        @Override
+        public void onError(Throwable ignored) {}
+
+    }
 
     public void navUpSelected(){
         DetailMovieView detailMovieView = view.get();

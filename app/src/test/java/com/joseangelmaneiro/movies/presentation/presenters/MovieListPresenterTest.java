@@ -1,7 +1,8 @@
 package com.joseangelmaneiro.movies.presentation.presenters;
 
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
+import com.joseangelmaneiro.movies.domain.Observer;
+import com.joseangelmaneiro.movies.domain.interactor.GetMovies;
 import com.joseangelmaneiro.movies.domain.interactor.UseCase;
 import com.joseangelmaneiro.movies.domain.interactor.UseCaseFactory;
 import com.joseangelmaneiro.movies.presentation.MovieCellView;
@@ -15,29 +16,27 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 public class MovieListPresenterTest {
 
-    private MovieListPresenter sut;
-    @Mock
-    UseCaseFactory useCaseFactory;
-    @Mock
-    UseCase useCase;
-    @Mock
-    private MovieListView view;
-    @Mock
-    private MovieCellView cellView;
-    @Captor
-    private ArgumentCaptor<Handler<List<Movie>>> moviesHandlerCaptor;
-    @Captor
-    private ArgumentCaptor<Integer> intCaptor;
+    private static final int POSITION = 0;
+
+    @Mock UseCaseFactory useCaseFactory;
+    @Mock UseCase useCase;
+    @Mock MovieListView view;
+    @Mock MovieCellView cellView;
+
+    @Captor ArgumentCaptor<GetMovies.Params> paramsCaptor;
+    @Captor ArgumentCaptor<Observer<List<Movie>>> observerCaptor;
+
+    MovieListPresenter sut;
 
 
     @Before
@@ -59,48 +58,33 @@ public class MovieListPresenterTest {
     public void viewReady_InvokesUseCase(){
         sut.viewReady();
 
-        verify(useCase).execute(any(Handler.class), isNull());
+        verify(useCase).execute(any(Observer.class), paramsCaptor.capture());
+        assertThat(paramsCaptor.getValue().isOnlyOnline(), is(false));
     }
 
     @Test
     public void refresh_InvokesUseCase(){
         sut.refresh();
 
-        verify(useCase).execute(any(Handler.class), isNull());
+        verify(useCase).execute(any(Observer.class), paramsCaptor.capture());
+        assertThat(paramsCaptor.getValue().isOnlyOnline(), is(true));
     }
 
     @Test
-    public void viewReady_SavesMovies(){
-        List<Movie> fakeMovieList = TestUtils.createMainMovieList();
+    public void saveResultAndRefreshViewWhenUseCaseReturnsAMovieList(){
+        whenUseCaseReturnsAMovieList();
 
-        sut.viewReady();
-        setMoviesAvailable(fakeMovieList);
-
-        // If repository returns movies, they are saved
         assertFalse(sut.moviesListIsEmpty());
-    }
-
-    @Test
-    public void viewReady_RefreshesViewCorrectly(){
-        List<Movie> fakeMovieList = TestUtils.createMainMovieList();
-
-        sut.viewReady();
-        setMoviesAvailable(fakeMovieList);
-
         verify(view).cancelRefreshDialog();
         verify(view).refreshList();
     }
 
     @Test
-    public void viewReady_FiresErrorMessage(){
-        String errorMessage = "Error message";
-        Exception exception = new Exception(errorMessage);
-
-        sut.viewReady();
-        setMoviesError(exception);
+    public void showErrorMessageWhenUseCaseFiresAException(){
+        Exception exception = whenUseCaseFiresAException();
 
         verify(view).cancelRefreshDialog();
-        verify(view).showErrorMessage(eq(errorMessage));
+        verify(view).showErrorMessage(eq(exception.getMessage()));
     }
 
     @Test
@@ -109,61 +93,56 @@ public class MovieListPresenterTest {
     }
 
     @Test
-    public void getItemsCount_ReturnsNumberOfItems(){
-        int itemsExpected = 10;
-        List<Movie> fakeMovieList = TestUtils.createMovieList(itemsExpected);
+    public void getItemsCount_ReturnsTheNumberOfItems(){
+        List<Movie> movieList = givenAMovieList();
 
-        sut.saveMovies(fakeMovieList);
-
-        assertEquals(itemsExpected, sut.getItemsCount());
+        assertThat(sut.getItemsCount(), is(movieList.size()));
     }
 
     @Test
     public void configureCell_DisplaysImage(){
-        int fakePosition = 1;
-        List<Movie> movieList = TestUtils.createMainMovieList();
-        Movie movieToConfigure = movieList.get(fakePosition);
-        sut.saveMovies(movieList);
+        Movie movie = givenAMovieFromList();
 
-        sut.configureCell(cellView, fakePosition);
+        sut.configureCell(cellView, POSITION);
 
-        verify(cellView).displayImage(eq(movieToConfigure.getPosterPath()));
+        verify(cellView).displayImage(eq(movie.getPosterPath()));
     }
 
     @Test
-    public void onItemClick_SavesSelectedMovieId(){
-        int fakePosition = 0;
+    public void onItemClick_SavesSelectedMovieIdAndInvokesNavigateToDetailScreen(){
+        Movie movie = givenAMovieFromList();
+
+        sut.onItemClick(POSITION);
+
+        assertThat(sut.getSelectedMovieId(), is(movie.getId()));
+        verify(view).navigateToDetailScreen(eq(movie.getId()));
+    }
+
+    private void whenUseCaseReturnsAMovieList() {
+        sut.viewReady();
+
         List<Movie> movieList = TestUtils.createMainMovieList();
-        int idExpected = movieList.get(fakePosition).getId();
-        sut.saveMovies(movieList);
-
-        sut.onItemClick(fakePosition);
-
-        assertEquals(idExpected, sut.getSelectedMovieId());
+        verify(useCase).execute(observerCaptor.capture(), any());
+        observerCaptor.getValue().onSuccess(movieList);
     }
 
-    @Test
-    public void onItemClick_InvokesNavigateToDetailScreen(){
-        int fakePosition = 0;
+    private Exception whenUseCaseFiresAException() {
+        sut.viewReady();
+
+        Exception exception = new Exception("Fake Error");
+        verify(useCase).execute(observerCaptor.capture(), any());
+        observerCaptor.getValue().onError(exception);
+        return exception;
+    }
+
+    private List<Movie> givenAMovieList(){
         List<Movie> movieList = TestUtils.createMainMovieList();
-        int idExpected = movieList.get(fakePosition).getId();
         sut.saveMovies(movieList);
-
-        sut.onItemClick(fakePosition);
-
-        verify(view).navigateToDetailScreen(intCaptor.capture());
-        assertEquals(idExpected, intCaptor.getValue().intValue());
+        return movieList;
     }
 
-
-    private void setMoviesAvailable(List<Movie> movieList) {
-        verify(useCase).execute(moviesHandlerCaptor.capture(), isNull());
-        moviesHandlerCaptor.getValue().handle(movieList);
-    }
-
-    private void setMoviesError(Exception exception) {
-        verify(useCase).execute(moviesHandlerCaptor.capture(), isNull());
-        moviesHandlerCaptor.getValue().error(exception);
+    private Movie givenAMovieFromList(){
+        return givenAMovieList().get(POSITION);
     }
 
 }

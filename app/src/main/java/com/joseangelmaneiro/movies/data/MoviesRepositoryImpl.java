@@ -4,7 +4,6 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.domain.MoviesRepository;
 import java.util.List;
@@ -30,25 +29,30 @@ public class MoviesRepositoryImpl implements MoviesRepository {
     }
 
     @Override
-    public void getMovies(final Handler<List<Movie>> handler) {
-        remoteDataSource.getAll(new Handler<List<MovieEntity>>() {
-            @Override
-            public void handle(List<MovieEntity> movieEntityList) {
-                localDataSource.deleteAll();
-                localDataSource.save(movieEntityList);
-                handler.handle(entityDataMapper.transform(movieEntityList));
+    public List<Movie> getMovies(boolean onlyOnline) throws Exception {
+        List<MovieEntity> movieEntityList;
+        if(onlyOnline){
+            movieEntityList = remoteDataSource.getAll();
+            saveData(movieEntityList);
+        } else{
+            movieEntityList = localDataSource.getAll();
+            if(movieEntityList.isEmpty()){
+                movieEntityList = remoteDataSource.getAll();
+                saveData(movieEntityList);
             }
-            @Override
-            public void error(Exception exception) {
-                handler.error(exception);
-            }
-        });
+        }
+        return entityDataMapper.transform(movieEntityList);
+    }
+
+    private void saveData(List<MovieEntity> movieEntityList){
+        localDataSource.deleteAll();
+        localDataSource.save(movieEntityList);
     }
 
     @Override
-    public void getMovie(int movieId, final Handler<Movie> handler) {
+    public Movie getMovie(int movieId) {
         MovieEntity movieEntity = localDataSource.get(movieId);
-        handler.handle(entityDataMapper.transform(movieEntity));
+        return entityDataMapper.transform(movieEntity);
     }
 
 }

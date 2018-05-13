@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface MoviesRepository {
 
-    void getMovies(Handler<List<Movie>> handler);
+    List<Movie> getMovies(boolean onlyOnline) throws Exception;
 
-    void getMovie(int movieId, Handler<Movie> handler);
+    Movie getMovie(int movieId);
 
 }

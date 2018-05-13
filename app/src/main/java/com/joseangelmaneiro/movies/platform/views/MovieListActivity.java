@@ -59,12 +59,7 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
                 R.color.colorPrimary,
                 R.color.colorPrimaryDark,
                 R.color.colorAccent);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.refresh();
-            }
-        });
+        refreshLayout.setOnRefreshListener(() -> presenter.refresh());
     }
 
     private void informPresenterViewIsReady(){

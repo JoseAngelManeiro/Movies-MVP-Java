@@ -4,18 +4,15 @@ import com.joseangelmaneiro.movies.data.entity.MovieEntity;
 import com.joseangelmaneiro.movies.data.entity.mapper.EntityDataMapper;
 import com.joseangelmaneiro.movies.data.source.local.MoviesLocalDataSource;
 import com.joseangelmaneiro.movies.data.source.remote.MoviesRemoteDataSource;
-import com.joseangelmaneiro.movies.domain.Handler;
 import com.joseangelmaneiro.movies.domain.Movie;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import java.util.Collections;
 import java.util.List;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,18 +23,13 @@ public class MoviesRepositoryImplTest {
     private static final int MOVIE_ID = 1234;
 
     private MoviesRepositoryImpl sut;
+
     @Mock
     private MoviesLocalDataSource localDataSource;
     @Mock
     private MoviesRemoteDataSource remoteDataSource;
     @Mock
     private EntityDataMapper entityDataMapper;
-    @Mock
-    private Handler<List<Movie>> moviesHandler;
-    @Mock
-    private Handler<Movie> movieHandler;
-    @Captor
-    private ArgumentCaptor<Handler<List<MovieEntity>>> moviesHandlerCaptor;
 
     private List<MovieEntity> movieEntityList;
     private MovieEntity movieEntity;
@@ -70,57 +62,70 @@ public class MoviesRepositoryImplTest {
     }
 
     @Test
-    public void getMovies_ReturnsAllMoviesFromRemoteDataSource() {
+    public void getMovies_ReturnsAllMoviesFromRemoteDataSource() throws Exception {
         givenAValidListFromRemote();
 
-        thenSaveInLocalAndReturnList();
+        sut.getMovies(true);
+
+        thenSaveInLocalAndTransformList();
     }
 
     @Test
-    public void getMovies_FiresErrorFromRemoteDataSource() {
-        givenAExceptionFromRemote();
+    public void getMovies_ReturnsAllMoviesFromLocalDataSource() throws Exception {
+        givenAValidListFromLocal();
 
-        verify(moviesHandler).error(any(Exception.class));
+        sut.getMovies(false);
+
+        thenTransformList();
+    }
+
+    @Test
+    public void getMovies_ReturnsEmptyListFromLocalDataSource() throws Exception {
+        givenAEmptyListFromLocal();
+        givenAValidListFromRemote();
+
+        sut.getMovies(false);
+
+        thenSaveInLocalAndTransformList();
     }
 
     @Test
     public void getMovie_ReturnsMovieFromLocalDataSource() {
-        givenAValidElementFromLocal();
+        givenAValidMovieFromLocal();
 
-        verify(movieHandler).handle(movie);
+        sut.getMovie(MOVIE_ID);
+
+        thenTransformMovie();
     }
 
-
-    private void givenAValidListFromRemote(){
-        sut.getMovies(moviesHandler);
-        setMoviesAvailable(movieEntityList);
+    private void givenAValidListFromRemote() throws Exception {
+        when(remoteDataSource.getAll()).thenReturn(movieEntityList);
     }
 
-    private void thenSaveInLocalAndReturnList(){
+    private void givenAEmptyListFromLocal() throws Exception {
+        when(localDataSource.getAll()).thenReturn(Collections.emptyList());
+    }
+
+    private void givenAValidListFromLocal() throws Exception {
+        when(localDataSource.getAll()).thenReturn(movieEntityList);
+    }
+
+    private void thenSaveInLocalAndTransformList(){
         verify(localDataSource).deleteAll();
         verify(localDataSource).save(eq(movieEntityList));
-        verify(moviesHandler).handle(eq(movieList));
+        thenTransformList();
     }
 
-    private void givenAExceptionFromRemote(){
-        sut.getMovies(moviesHandler);
-        setMoviesError(new Exception());
+    private void thenTransformList(){
+        verify(entityDataMapper).transform(eq(movieEntityList));
     }
 
-    private void givenAValidElementFromLocal(){
+    private void givenAValidMovieFromLocal(){
         when(localDataSource.get(eq(MOVIE_ID))).thenReturn(movieEntity);
-        sut.getMovie(MOVIE_ID, movieHandler);
     }
 
-    private void setMoviesError(Exception exception) {
-        ArgumentCaptor<Handler<List<MovieEntity>>> argumentCaptor = ArgumentCaptor.forClass(Handler.class);
-        verify(remoteDataSource).getAll(argumentCaptor.capture());
-        argumentCaptor.getValue().error(exception);
-    }
-
-    private void setMoviesAvailable(List<MovieEntity> movieEntityList) {
-        verify(remoteDataSource).getAll(moviesHandlerCaptor.capture());
-        moviesHandlerCaptor.getValue().handle(movieEntityList);
+    private void thenTransformMovie(){
+        verify(entityDataMapper).transform(eq(movieEntity));
     }
 
 }
