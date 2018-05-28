@@ -110,7 +110,7 @@ public class MockWebServerTest {
 
     protected String getContentFromFile(String fileName) throws IOException {
         if (fileName == null) {
-            return "";
+            return "{}";
         }
         fileName = getClass().getResource("/" + fileName).getFile();
         File file = new File(fileName);
