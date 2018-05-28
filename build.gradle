@@ -36,6 +36,7 @@ ext {
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
     daggerMockVersion = '0.8.4'
+    mockWebServerVersion = '2.5.0'
 }
 
 task clean(type: Delete) {
