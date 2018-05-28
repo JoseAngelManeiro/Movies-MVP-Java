@@ -76,5 +76,6 @@ dependencies {
     androidTestCompile "com.github.fabioCollini.daggermock:daggermock:$rootProject.daggerMockVersion"
 
     testCompile "com.squareup.okhttp:mockwebserver:$rootProject.mockWebServerVersion"
+    testCompile "commons-io:commons-io:$rootProject.commonsIoVersion"
 
 }
