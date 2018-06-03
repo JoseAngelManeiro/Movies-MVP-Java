@@ -81,4 +81,10 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
         Navigator.navigateToDetail(this, movieId);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
+
 }

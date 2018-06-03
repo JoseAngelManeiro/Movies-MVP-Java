@@ -12,31 +12,19 @@ public abstract class UseCase<Observer, Params> {
 
     private final UIScheduler uiScheduler;
     private final JobScheduler jobScheduler;
-    private final CompositeDisposable disposables;
 
     UseCase(UIScheduler uiScheduler, JobScheduler jobScheduler) {
         this.uiScheduler = uiScheduler;
         this.jobScheduler = jobScheduler;
-        this.disposables = new CompositeDisposable();
     }
 
     abstract Single<Observer> buildUseCaseObservable(Params params);
 
-    public void execute(DisposableSingleObserver<Observer> observer, Params params) {
+    public Disposable execute(DisposableSingleObserver<Observer> observer, Params params) {
         final Single<Observer> observable = this.buildUseCaseObservable(params)
                 .observeOn(uiScheduler.getScheduler())
                 .subscribeOn(jobScheduler.getScheduler());
-        addDisposable(observable.subscribeWith(observer));
-    }
-
-    public void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
-        }
-    }
-
-    private void addDisposable(Disposable disposable) {
-        disposables.add(disposable);
+        return observable.subscribeWith(observer);
     }
 
 }
