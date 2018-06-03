@@ -15,6 +15,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import io.reactivex.disposables.Disposable;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +34,7 @@ public class DetailMoviePresenterTest {
 
     @Mock UseCaseFactory useCaseFactory;
     @Mock UseCase useCase;
+    @Mock Disposable disposable;
     @Mock Formatter formatter;
     @Mock DetailMovieView view;
 
@@ -48,6 +52,7 @@ public class DetailMoviePresenterTest {
         sut.setView(view);
 
         when(useCaseFactory.getMovie()).thenReturn(useCase);
+        when(useCase.execute(any(), any())).thenReturn(disposable);
     }
 
     @After

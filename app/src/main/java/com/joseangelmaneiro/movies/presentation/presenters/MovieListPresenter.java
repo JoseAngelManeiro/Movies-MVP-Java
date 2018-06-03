@@ -12,7 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 
-public class MovieListPresenter {
+public class MovieListPresenter extends BasePresenter{
 
     private UseCaseFactory useCaseFactory;
 
@@ -41,7 +41,7 @@ public class MovieListPresenter {
 
     private void invokeUseCase(boolean refresh){
         UseCase useCase = useCaseFactory.getMovies();
-        useCase.execute(new MoviesObserver(), new GetMovies.Params(refresh));
+        addDisposable(useCase.execute(new MoviesObserver(), new GetMovies.Params(refresh)));
     }
 
     private final class MoviesObserver extends Observer<List<Movie>>{

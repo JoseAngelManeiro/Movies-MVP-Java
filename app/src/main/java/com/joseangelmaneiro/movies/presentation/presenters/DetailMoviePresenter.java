@@ -11,7 +11,7 @@ import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
 
-public class DetailMoviePresenter {
+public class DetailMoviePresenter extends BasePresenter {
 
     private UseCaseFactory useCaseFactory;
 
@@ -36,7 +36,7 @@ public class DetailMoviePresenter {
 
     public void viewReady(){
         UseCase useCase = useCaseFactory.getMovie();
-        useCase.execute(new MovieObserver(), new GetMovie.Params(movieId));
+        addDisposable(useCase.execute(new MovieObserver(), new GetMovie.Params(movieId)));
     }
 
     private final class MovieObserver extends Observer<Movie> {

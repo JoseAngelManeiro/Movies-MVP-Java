@@ -104,4 +104,10 @@ public class DetailMovieActivity extends BaseActivity implements DetailMovieView
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroy();
+    }
+
 }
