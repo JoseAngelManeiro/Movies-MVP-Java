@@ -1,17 +1,15 @@
 package com.joseangelmaneiro.movies.utils;
 
-
 import com.joseangelmaneiro.movies.data.Movie;
 import com.joseangelmaneiro.movies.data.Page;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TestUtils implements TestData{
 
-    private TestUtils(){
-
-    }
+    private TestUtils(){}
 
     public static Page createMainPage(){
         return new Page(
@@ -54,6 +52,12 @@ public class TestUtils implements TestData{
 
     public static List<Movie> createMainMovieList(){
         return createMovieList(10);
+    }
+
+    public static MovieViewModel createMainMovieViewModel(){
+        return new MovieViewModel(MAIN_MOVIE_VM_ID, MAIN_MOVIE_VM_VOTE_AVERAGE, MAIN_MOVIE_VM_TITLE,
+                MAIN_MOVIE_VM_POSTER_PATH, MAIN_MOVIE_VM_BACKDROPPATH, MAIN_MOVIE_VM_OVERVIEW,
+                MAIN_MOVIE_VM_RELEASE_DATE);
     }
 
 }
