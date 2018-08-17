@@ -5,20 +5,22 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import com.joseangelmaneiro.movies.R;
 import com.joseangelmaneiro.movies.di.Injection;
 import com.joseangelmaneiro.movies.ui.BaseActivity;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.ui.MovieMapper;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import com.joseangelmaneiro.movies.ui.detail.DetailMovieActivity;
+import java.util.ArrayList;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MovieListActivity extends BaseActivity implements MovieListView {
+public class MovieListActivity extends BaseActivity implements MovieListView,
+        MoviesAdapter.ItemClickListener {
 
     private MovieListPresenter presenter;
-
     private MoviesAdapter adapter;
 
     @BindView(R.id.refreshLayout) SwipeRefreshLayout refreshLayout;
@@ -52,7 +54,7 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
     private void setUpPresenter(){
         presenter = new MovieListPresenter(
                 Injection.provideRepository(getApplicationContext()),
-                new Formatter());
+                new MovieMapper());
         presenter.setView(this);
     }
 
@@ -61,7 +63,7 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
     }
 
     private void setUpListView(){
-        adapter = new MoviesAdapter(presenter);
+        adapter = new MoviesAdapter(this, new ArrayList<MovieViewModel>());
         recyclerView.setAdapter(adapter);
     }
 
@@ -83,8 +85,8 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
     }
 
     @Override
-    public void refreshList() {
-        adapter.refreshData();
+    public void refreshList(List<MovieViewModel> items) {
+        adapter.refreshData(items);
     }
 
     @Override
@@ -93,10 +95,15 @@ public class MovieListActivity extends BaseActivity implements MovieListView {
     }
 
     @Override
-    public void navigateToDetailScreen(int movieId) {
+    public void navigateToDetailScreen(int id) {
         Intent intent = new Intent(this, DetailMovieActivity.class);
-        intent.putExtra(DetailMovieActivity.EXTRA_MOVIE_ID, movieId);
+        intent.putExtra(DetailMovieActivity.EXTRA_ID, id);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(MovieViewModel movieViewModel) {
+        presenter.onItemClick(movieViewModel);
     }
 
 }
