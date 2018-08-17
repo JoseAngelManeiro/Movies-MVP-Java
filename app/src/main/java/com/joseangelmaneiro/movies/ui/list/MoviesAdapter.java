@@ -5,19 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import com.squareup.picasso.Picasso;
 import com.joseangelmaneiro.movies.R;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolder>{
 
-    private MovieListPresenter presenter;
+    private ItemClickListener listener;
+    private List<MovieViewModel> items;
 
 
-    public MoviesAdapter(MovieListPresenter presenter){
-        this.presenter = presenter;
+    public MoviesAdapter(ItemClickListener listener, List<MovieViewModel> items){
+        this.listener = listener;
+        this.items = items;
     }
 
     @Override
@@ -33,21 +37,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
 
     @Override
     public void onBindViewHolder(MovieHolder movieHolder, int position) {
-        presenter.configureCell(movieHolder, position);
+        movieHolder.bind(items.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return presenter.getItemsCount();
+        return items.size();
     }
 
-    public void refreshData(){
-        notifyDataSetChanged();
+    public interface ItemClickListener{
+        void onItemClick(MovieViewModel movieViewModel);
     }
 
-
-    public class MovieHolder extends RecyclerView.ViewHolder implements MovieCellView,
-            View.OnClickListener{
+    public class MovieHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         @BindView(R.id.image) ImageView imageView;
 
@@ -59,19 +61,23 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieHolde
             itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void displayImage(String url) {
+        public void bind(MovieViewModel movieViewModel){
             Picasso.with(imageView.getContext())
-                    .load(url)
+                    .load(movieViewModel.getPosterPath())
                     .placeholder(R.drawable.movie_placeholder)
                     .into(imageView);
         }
 
         @Override
         public void onClick(View view) {
-            presenter.onItemClick(getAdapterPosition());
+            listener.onItemClick(items.get(getAdapterPosition()));
         }
 
+    }
+
+    public void refreshData(List<MovieViewModel> items){
+        this.items = items;
+        notifyDataSetChanged();
     }
 
 }

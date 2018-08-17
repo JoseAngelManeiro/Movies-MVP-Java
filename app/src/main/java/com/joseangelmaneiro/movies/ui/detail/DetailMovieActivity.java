@@ -2,7 +2,6 @@ package com.joseangelmaneiro.movies.ui.detail;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +16,7 @@ import butterknife.ButterKnife;
 
 public class DetailMovieActivity extends BaseActivity implements DetailMovieView {
 
-    public static final String EXTRA_MOVIE_ID = "MOVIE_ID";
+    public static final String EXTRA_ID = "MOVIE_ID";
 
     private DetailMoviePresenter presenter;
 
@@ -48,7 +47,7 @@ public class DetailMovieActivity extends BaseActivity implements DetailMovieView
     }
 
     private void setUpPresenter(){
-        int movieId = getIntent().getIntExtra(EXTRA_MOVIE_ID, -1);
+        int movieId = getIntent().getIntExtra(EXTRA_ID, -1);
         presenter = new DetailMoviePresenter(
                 Injection.provideRepository(getApplicationContext()),
                 new Formatter(),

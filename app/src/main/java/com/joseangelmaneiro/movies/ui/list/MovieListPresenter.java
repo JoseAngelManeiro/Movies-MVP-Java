@@ -3,7 +3,8 @@ package com.joseangelmaneiro.movies.ui.list;
 import com.joseangelmaneiro.movies.data.Handler;
 import com.joseangelmaneiro.movies.data.Movie;
 import com.joseangelmaneiro.movies.data.MoviesRepository;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.ui.MovieMapper;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -11,19 +12,13 @@ import java.util.List;
 public class MovieListPresenter implements Handler<List<Movie>>{
 
     private MoviesRepository repository;
-
-    private Formatter formatter;
-
+    private MovieMapper movieMapper;
     private WeakReference<MovieListView> view;
 
-    private List<Movie> movieList;
 
-    private int selectedMovieId;
-
-
-    public MovieListPresenter(MoviesRepository repository, Formatter formatter){
+    public MovieListPresenter(MoviesRepository repository, MovieMapper movieMapper){
         this.repository = repository;
-        this.formatter = formatter;
+        this.movieMapper = movieMapper;
     }
 
     public void setView(MovieListView movieListView){
@@ -44,11 +39,10 @@ public class MovieListPresenter implements Handler<List<Movie>>{
 
     @Override
     public void handle(List<Movie> movieList) {
-        saveMovies(movieList);
         MovieListView movieListView = view.get();
         if(movieListView!=null){
             movieListView.cancelRefreshDialog();
-            movieListView.refreshList();
+            movieListView.refreshList(movieMapper.transform(movieList));
         }
     }
 
@@ -61,46 +55,11 @@ public class MovieListPresenter implements Handler<List<Movie>>{
         }
     }
 
-    public int getItemsCount(){
-        if(moviesListIsEmpty()){
-            return 0;
-        } else{
-            return movieList.size();
-        }
-    }
-
-    public void configureCell(MovieCellView movieCellView, int position){
-        Movie movie = getMovie(position);
-        movieCellView.displayImage(formatter.getCompleteUrlImage(movie.getPosterPath()));
-    }
-
-    public void onItemClick(int position){
-        Movie movie = getMovie(position);
-        saveSelectedMovieId(movie.getId());
+    public void onItemClick(MovieViewModel movieViewModel){
         MovieListView movieListView = view.get();
         if(movieListView!=null){
-            movieListView.navigateToDetailScreen(getSelectedMovieId());
+            movieListView.navigateToDetailScreen(movieViewModel.getId());
         }
-    }
-
-    public void saveMovies(List<Movie> movieList){
-        this.movieList = movieList;
-    }
-
-    public Movie getMovie(int position){
-        return movieList.get(position);
-    }
-
-    public void saveSelectedMovieId(int selectedMovieId){
-        this.selectedMovieId = selectedMovieId;
-    }
-
-    public boolean moviesListIsEmpty(){
-        return movieList==null || movieList.isEmpty();
-    }
-
-    public int getSelectedMovieId(){
-        return selectedMovieId;
     }
 
 }
