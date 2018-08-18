@@ -3,7 +3,8 @@ package com.joseangelmaneiro.movies.ui.detail;
 import com.joseangelmaneiro.movies.data.Handler;
 import com.joseangelmaneiro.movies.data.Movie;
 import com.joseangelmaneiro.movies.data.MoviesRepository;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.ui.MovieMapper;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import com.joseangelmaneiro.movies.utils.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -12,9 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,32 +23,32 @@ public class DetailMoviePresenterTest {
 
     private static final int MOVIE_ID = 1234;
 
+    private final Movie movie = TestUtils.createMainMovie();
+    private final MovieViewModel movieViewModel = TestUtils.createMainMovieViewModel();
+
     DetailMoviePresenter sut;
     @Mock
     MoviesRepository repository;
     @Mock
-    Formatter formatter;
+    MovieMapper movieMapper;
     @Mock
     DetailMovieView view;
     @Captor
     private ArgumentCaptor<Handler<Movie>> movieHandlerCaptor;
-    @Captor
-    private ArgumentCaptor<String> textCaptor;
-    @Captor
-    private ArgumentCaptor<Integer> intCaptor;
 
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        sut = new DetailMoviePresenter(repository, formatter, MOVIE_ID);
+        sut = new DetailMoviePresenter(repository, movieMapper, MOVIE_ID);
         sut.setView(view);
 
+        when(movieMapper.transform(movie)).thenReturn(movieViewModel);
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         sut = null;
     }
 
@@ -57,63 +56,19 @@ public class DetailMoviePresenterTest {
     public void viewReady_InvokesGetMovie(){
         sut.viewReady();
 
-        verify(repository).getMovie(intCaptor.capture(), any(Handler.class));
-        assertEquals(MOVIE_ID, intCaptor.getValue().intValue());
+        verify(repository).getMovie(eq(MOVIE_ID), any(Handler.class));
     }
 
     @Test
-    public void viewReady_InvokesDisplayImage(){
-        String fakePath = "fake-path";
-        when(formatter.getCompleteUrlImage(anyString())).thenReturn(fakePath);
-        sut.viewReady();
-        setMovieAvailable(TestUtils.createMainMovie());
-
-        verify(view).displayImage(textCaptor.capture());
-        assertEquals(fakePath, textCaptor.getValue());
-    }
-
-    @Test
-    public void viewReady_InvokesDisplayTitle(){
-        Movie movie = TestUtils.createMainMovie();
-        String titleExpected = movie.getTitle();
+    public void viewReady_DisplaysTheView(){
         sut.viewReady();
         setMovieAvailable(movie);
 
-        verify(view).displayTitle(textCaptor.capture());
-        assertEquals(titleExpected, textCaptor.getValue());
-    }
-
-    @Test
-    public void viewReady_InvokesDisplayVoteAverage(){
-        Movie movie = TestUtils.createMainMovie();
-        String voteAverageExpected = movie.getVoteAverage();
-        sut.viewReady();
-        setMovieAvailable(movie);
-
-        verify(view).displayVoteAverage(textCaptor.capture());
-        assertEquals(voteAverageExpected, textCaptor.getValue());
-    }
-
-    @Test
-    public void viewReady_InvokesDisplayReleaseDate(){
-        String fakeDate = "22/10/2017";
-        when(formatter.formatDate(anyString())).thenReturn(fakeDate);
-        sut.viewReady();
-        setMovieAvailable(TestUtils.createMainMovie());
-
-        verify(view).displayReleaseDate(textCaptor.capture());
-        assertEquals(fakeDate, textCaptor.getValue());
-    }
-
-    @Test
-    public void viewReady_InvokesDisplayOverview(){
-        Movie movie = TestUtils.createMainMovie();
-        String overviewExpected = movie.getOverview();
-        sut.viewReady();
-        setMovieAvailable(movie);
-
-        verify(view).displayOverview(textCaptor.capture());
-        assertEquals(overviewExpected, textCaptor.getValue());
+        verify(view).displayImage(eq(movieViewModel.getBackdropPath()));
+        verify(view).displayTitle(eq(movieViewModel.getTitle()));
+        verify(view).displayVoteAverage(eq(movieViewModel.getVoteAverage()));
+        verify(view).displayReleaseDate(eq(movieViewModel.getReleaseDate()));
+        verify(view).displayOverview(eq(movieViewModel.getOverview()));
     }
 
     @Test
