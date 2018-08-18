@@ -3,24 +3,22 @@ package com.joseangelmaneiro.movies.ui.detail;
 import com.joseangelmaneiro.movies.data.Handler;
 import com.joseangelmaneiro.movies.data.Movie;
 import com.joseangelmaneiro.movies.data.MoviesRepository;
-import com.joseangelmaneiro.movies.ui.Formatter;
+import com.joseangelmaneiro.movies.ui.MovieMapper;
+import com.joseangelmaneiro.movies.ui.MovieViewModel;
 import java.lang.ref.WeakReference;
 
 
 public class DetailMoviePresenter implements Handler<Movie>{
 
     private MoviesRepository repository;
-
-    private Formatter formatter;
-
+    private MovieMapper movieMapper;
     private int movieId;
-
     private WeakReference<DetailMovieView> view;
 
 
-    public DetailMoviePresenter(MoviesRepository repository, Formatter formatter, int movieId){
+    public DetailMoviePresenter(MoviesRepository repository, MovieMapper movieMapper, int movieId){
         this.repository = repository;
-        this.formatter = formatter;
+        this.movieMapper = movieMapper;
         this.movieId = movieId;
     }
 
@@ -36,10 +34,11 @@ public class DetailMoviePresenter implements Handler<Movie>{
     public void handle(Movie movie) {
         DetailMovieView detailMovieView = view.get();
         if(detailMovieView!=null){
-            detailMovieView.displayImage(formatter.getCompleteUrlImage(movie.getBackdropPath()));
+            MovieViewModel movieViewModel = movieMapper.transform(movie);
+            detailMovieView.displayImage(movieViewModel.getBackdropPath());
             detailMovieView.displayTitle(movie.getTitle());
             detailMovieView.displayVoteAverage(movie.getVoteAverage());
-            detailMovieView.displayReleaseDate(formatter.formatDate(movie.getReleaseDate()));
+            detailMovieView.displayReleaseDate(movieViewModel.getReleaseDate());
             detailMovieView.displayOverview(movie.getOverview());
         }
     }
