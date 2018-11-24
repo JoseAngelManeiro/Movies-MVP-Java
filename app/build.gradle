@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '26.0.3'
     defaultConfig {
         applicationId "com.joseangelmaneiro.movies"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.joseangelmaneiro.movies.helpers.CustomTestRunner"
@@ -19,8 +19,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
